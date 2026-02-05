@@ -1,14 +1,20 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './pages/login/login.component';
+import { LandingComponent } from './pages/landing/landing.component';
+import { AdminLoginComponent } from './pages/admin-login/admin-login.component';
+import { ParticipantLoginComponent } from './pages/participant-login/participant-login.component';
 import { ParticipantBoardComponent } from './pages/participant-board/participant-board.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 
-export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
 
-  { path: 'login', component: LoginComponent },
-  { path: 'board', component: ParticipantBoardComponent },
-  { path: 'admin', component: AdminDashboardComponent },
+export const routes: Routes = [
+  { path: '', redirectTo: 'landing', pathMatch: 'full' },
+
+  { path: 'landing', component: LandingComponent },
+  { path: 'participant-login', component: ParticipantLoginComponent },
+  { path: 'admin-login', component: AdminLoginComponent},
+  { path: 'paticipant-board', component: ParticipantBoardComponent },
+  { path: 'admin-board', component: AdminDashboardComponent },
+  
 
   { path: '**', redirectTo: 'login' }
 ];
