@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SidebarComponent } from '../sidebar/sidebar.component';
+import { CommonModule } from '@angular/common';
 
 interface Achievement {
   title: string;
@@ -10,7 +11,7 @@ interface Achievement {
 @Component({
   selector: 'app-participant-board',
   standalone: true,
-  imports: [SidebarComponent],
+  imports: [SidebarComponent, CommonModule],
   templateUrl: './participant-board.component.html',
   styleUrls: ['./participant-board.component.scss']
 })

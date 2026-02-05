@@ -1,34 +1,25 @@
-
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { SidebarComponent } from '../sidebar/sidebar.component';
 
-interface BingoCell {
-  text: string;
-  points: number;
-  flipped: boolean;
-}
+export type TaskStatus = 'available' | 'completed' | 'bingoLine';
 
 export interface BingoTask {
   id: number;
   name: string;
   points: number;
-  status: 'available' | 'completed' | 'bingoLine';
+  status: TaskStatus;
 }
 
 @Component({
   selector: 'app-bingo-task',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SidebarComponent],
   templateUrl: './bingo-task.component.html',
-  styleUrls: ['./bingo-task.component.scss']
+  styleUrls: ['./bingo-task.component.scss'],
 })
 export class BingoTaskComponent {
-
-  completedCount = 0;
-  totalTasks = 25;
-
-  tasks: BingoTask[] = [
+  readonly tasks: BingoTask[] = [
     { id: 1, name: 'Complete 5 exercises', points: 50, status: 'completed' },
     { id: 2, name: 'Read for 30 min', points: 40, status: 'available' },
     { id: 3, name: 'Meditate 10 min', points: 30, status: 'available' },
@@ -53,10 +44,14 @@ export class BingoTaskComponent {
     { id: 22, name: 'Compliment 3 people', points: 25, status: 'available' },
     { id: 23, name: 'Plan tomorrow', points: 25, status: 'available' },
     { id: 24, name: 'Deep work 2hrs', points: 60, status: 'available' },
-    { id: 25, name: 'Family time', points: 45, status: 'available' }
+    { id: 25, name: 'Family time', points: 45, status: 'available' },
   ];
 
-  constructor() {
-    this.completedCount = this.tasks.filter(t => t.status === 'completed').length;
+  get completedCount(): number {
+    return this.tasks.filter(t => t.status === 'completed' || t.status === 'bingoLine').length;
+  }
+
+  get totalTasks(): number {
+    return this.tasks.length;
   }
 }
