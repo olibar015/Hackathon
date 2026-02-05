@@ -1,1 +1,21 @@
-<p>bingo-task works!</p>
+<div class="bingo-container">
+  <h2 class="title">BINGO Challenge</h2>
+
+  <div class="bingo-board">
+    <div
+      class="bingo-row"
+      *ngFor="let row of bingoGrid; let rowIndex = index"
+    >
+      <div
+        class="bingo-cell"
+        *ngFor="let cell of row; let colIndex = index"
+        (click)="toggleCell(rowIndex, colIndex)"
+        [class.completed]="cell.completed"
+        [class.bingo]="cell.isBingo"
+      >
+        <div class="cell-title">{{ cell.title }}</div>
+        <div class="cell-points">+{{ cell.points }} pts</div>
+      </div>
+    </div>
+  </div>
+</div>
