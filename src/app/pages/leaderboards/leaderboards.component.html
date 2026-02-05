@@ -1,1 +1,51 @@
-<p>leaderboards works!</p>
+<div class="leaderboard-page" [class.sidebar-open]="isSidebarOpen">
+    <app-sidebar class="sidebar-panel" role="admin" displayName="User"></app-sidebar>
+    <div class="page-overlay" (click)="closeSidebar()"></div>
+
+    <main class="leaderboard-content">
+        <section class="leaderboard-card" aria-label="Leaderboard">
+            <div class="card-header">
+                <div class="card-title">
+                    <span class="icon crown" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" role="img" focusable="false">
+                            <path d="M3 7l4 3 5-6 5 6 4-3v11H3V7z" />
+                        </svg>
+                    </span>
+                    <span>Leaderboard</span>
+                </div>
+            </div>
+
+            <ul class="leaderboard-list">
+                <li class="leaderboard-item"
+                    *ngFor="let item of leaderboard"
+                    [class.top]="item.rank === 1"
+                    [class.is-you]="item.isYou">
+                    <div class="rank">{{ item.rank }}</div>
+                    <div class="avatar">{{ item.initials }}</div>
+                    <div class="meta">
+                        <div class="name">
+                            {{ item.name }}
+                            <span *ngIf="item.isYou" class="badge">You</span>
+                        </div>
+                        <div class="sub">Level {{ item.level }} • {{ item.streakDays }} day streak</div>
+                    </div>
+                    <div class="score">
+                        <div class="points">{{ item.points | number }}</div>
+                        <div class="label">points</div>
+                    </div>
+                    <div class="trend" [ngClass]="item.trend" [attr.aria-label]="item.trend">
+                        <ng-container [ngSwitch]="item.trend">
+                            <svg *ngSwitchCase="'up'" viewBox="0 0 24 24" role="img" focusable="false">
+                                <path d="M5 15l6-6 4 4 4-4" />
+                            </svg>
+                            <svg *ngSwitchCase="'down'" viewBox="0 0 24 24" role="img" focusable="false">
+                                <path d="M5 9l6 6 4-4 4 4" />
+                            </svg>
+                        </ng-container>
+                        <span>{{ item.trend === 'neutral' ? '–' : item.trendValue }}</span>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </main>
+</div>
