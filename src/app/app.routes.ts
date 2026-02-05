@@ -23,8 +23,9 @@ export const routes: Routes = [
   { path: 'sidebar', component: SidebarComponent },
   { path: 'task-management', component: TaskManagementComponent },
   { path: 'bingo-task', component: BingoTaskComponent },
-  { path: 'leaderboards', component: LeaderboardsComponent },
-  { path: 'bingo-task', component: BingoTaskComponent},
+  { path: 'admin/leaderboards', component: LeaderboardsComponent },
+  { path: 'participant/leaderboards', component: LeaderboardsComponent },
+  { path: 'bingo-task', component: BingoTaskComponent },
 
 
   { path: '**', redirectTo: 'landing' }

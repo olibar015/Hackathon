@@ -1,19 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
+/* =========================
+   GLOBAL-LIKE SAFETIES
+   ========================= */
 * {
   box-sizing: border-box;
 }
 
-.bingo-container {
-  padding: 24px 16px;
+/* Make the page fill the viewport */
+:host {
+  display: block;
+  height: 100vh;
+}
+
+/* =========================
+   DASHBOARD LAYOUT (SIDEBAR + CONTENT)
+   ========================= */
+.dashboard-layout {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  /* avoid double scroll (body + content) */
+}
+
+/* Sidebar column */
+app-sidebar {
+  flex: 0 0 220px;
+  /* adjust to 240px if you want wider */
+  height: 100vh;
+}
+
+/* Main content column */
+.dashboard-content {
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
   background: #f7f8fc;
-  min-height: 100vh;
+  padding: 24px 16px;
+  /* spacing around the page content */
+}
+
+/* =========================
+   BINGO PAGE
+   ========================= */
+.bingo-container {
+  background: transparent;
+  /* dashboard-content already has bg */
+  padding: 0;
+  /* avoid double padding */
+  margin: 0 auto;
+  max-width: 1100px;
+
+  /* IMPORTANT FIX:
+     remove 100vh forcing that pushes content down */
+  min-height: unset;
 }
 
 .bingo-header {
-  margin-bottom: 24px;
+  margin: 0 0 24px;
   text-align: center;
 
   h1 {
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     font-size: 28px;
     font-weight: 700;
@@ -22,6 +71,7 @@
   }
 
   p {
+    font-family: 'Poppins', sans-serif;
     margin: 8px 0 0;
     font-size: 14px;
     color: #0a67b6;
@@ -34,7 +84,8 @@
   border-radius: 16px;
   padding: 20px;
   width: 100%;
-  max-width: 100%;
+  max-width: 720px;
+  /* wider so it looks nicer */
   margin: 0 auto;
   box-shadow: 0 8px 20px rgba(20, 50, 100, 0.08);
 }
@@ -56,6 +107,7 @@
 }
 
 .completion-badge {
+  font-family: 'Poppins', sans-serif;
   background: #0a67b6;
   color: #ffffff;
   font-size: 13px;
@@ -64,18 +116,25 @@
   border-radius: 20px;
 }
 
+/* =========================
+   BINGO GRID
+   ========================= */
 .bingo-wrapper {
   margin-bottom: 20px;
-  overflow-x: visible;
   display: flex;
   justify-content: center;
+
+  /* allow scroll if small screens */
+  overflow-x: auto;
+  padding-bottom: 6px;
 }
 
 .bingo-columns {
   display: flex;
   gap: 6px;
-  min-width: auto;
   justify-content: center;
+  min-width: max-content;
+  /* keeps columns intact */
 }
 
 .bingo-column {
@@ -86,6 +145,7 @@
 }
 
 .column-letter {
+  font-family: 'Poppins', sans-serif;
   text-align: center;
   font-size: 16px;
   font-weight: 700;
@@ -117,6 +177,10 @@
   transition: all 0.2s ease;
   flex-shrink: 0;
 
+  &:hover {
+    transform: translateY(-1px);
+  }
+
   &.completed {
     background: #f0f0f0;
 
@@ -145,6 +209,7 @@
 }
 
 .task-name {
+  font-family: 'Poppins', sans-serif;
   font-size: 11px;
   font-weight: 600;
   color: #0f1c2e;
@@ -152,11 +217,15 @@
 }
 
 .task-points {
+  font-family: 'Poppins', sans-serif;
   font-size: 10px;
   color: #0a67b6;
   font-weight: 500;
 }
 
+/* =========================
+   LEGEND
+   ========================= */
 .legend {
   display: flex;
   gap: 20px;
@@ -168,6 +237,7 @@
 }
 
 .legend-item {
+  font-family: 'Poppins', sans-serif;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -195,6 +265,9 @@
   }
 }
 
+/* =========================
+   RESPONSIVE
+   ========================= */
 @media (min-width: 480px) {
   .bingo-cell {
     width: 75px;
@@ -202,28 +275,31 @@
   }
 
   .column-letter {
+    font-family: 'Poppins', sans-serif;
     font-size: 17px;
   }
 
   .task-name {
+    font-family: 'Poppins', sans-serif;
     font-size: 10px;
   }
 }
 
 @media (min-width: 640px) {
-  .bingo-container {
+  .dashboard-content {
     padding: 32px 24px;
   }
 
   .bingo-card {
     padding: 24px;
-    max-width: 540px;
+    max-width: 720px;
   }
 
   .card-header {
     margin-bottom: 24px;
 
     h2 {
+      font-family: 'Poppins', sans-serif;
       font-size: 20px;
     }
   }
@@ -242,33 +318,34 @@
   }
 
   .task-name {
+    font-family: 'Poppins', sans-serif;
     font-size: 11px;
   }
 
   .column-letter {
+    font-family: 'Poppins', sans-serif;
     font-size: 18px;
   }
 }
 
 @media (min-width: 960px) {
-  .bingo-card {
-    max-width: 600px;
-  }
-
   .bingo-cell {
     width: 90px;
     height: 90px;
   }
 
   .column-letter {
+    font-family: 'Poppins', sans-serif;
     font-size: 19px;
   }
 
   .task-name {
+    font-family: 'Poppins', sans-serif;
     font-size: 11px;
   }
 
   .task-points {
+    font-family: 'Poppins', sans-serif;
     font-size: 10px;
   }
 }

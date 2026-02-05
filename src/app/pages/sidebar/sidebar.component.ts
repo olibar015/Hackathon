@@ -1,21 +1,28 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
-import Swal from 'sweetalert2'
-
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule], // ✅ IMPORTANT
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
+export class SidebarComponent implements OnInit {
+  role: 'admin' | 'employee' = 'employee';
+  displayName = 'User';
 
-export class SidebarComponent {
   constructor(private router: Router) { }
-  @Input() role: 'admin' | 'employee' = 'employee';
-  @Input() displayName = 'User';
+
+  ngOnInit(): void {
+    const r = localStorage.getItem('role');
+    const n = localStorage.getItem('displayName');
+
+    if (r === 'admin' || r === 'employee') this.role = r;
+    if (n) this.displayName = n;
+  }
 
   get roleLabel(): string {
     return this.role === 'admin' ? 'Admin' : 'Employee';
@@ -29,17 +36,21 @@ export class SidebarComponent {
       showCancelButton: true,
       confirmButtonText: 'Yes, logout',
       cancelButtonText: 'Cancel',
-      confirmButtonColor: '#0a67b6',
-      cancelButtonColor: '#d33'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Optional: clear auth data if you have it
-        // localStorage.removeItem('token');
-        // sessionStorage.clear();
 
-        this.router.navigateByUrl('/landing'); // or '/participant-login'
+      customClass: {
+        popup: 'swal-poppins',
+        title: 'swal-poppins',
+        htmlContainer: 'swal-poppins',
+        confirmButton: 'swal-poppins',
+        cancelButton: 'swal-poppins'
+      }
+    }).then(res => {
+      if (res.isConfirmed) {
+        localStorage.removeItem('role');
+        localStorage.removeItem('displayName');
+        this.router.navigateByUrl('/landing');
       }
     });
   }
-}
 
+}
