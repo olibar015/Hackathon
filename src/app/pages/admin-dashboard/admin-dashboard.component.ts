@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SidebarComponent } from '../sidebar/sidebar.component';
 
 interface Achievement {
   title: string;

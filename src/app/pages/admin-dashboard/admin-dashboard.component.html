@@ -1,1 +1,49 @@
-<p>admin-dashboard works!</p>
+<div class="dashboard-layout">
+    <!-- SIDEBAR -->
+    <app-sidebar role="admin" displayName="User"></app-sidebar>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <div class="dashboard-content">
+        <h1 class="page-title">Dashboard</h1>
+        <p class="page-subtitle">Overview of tasks by department</p>
+
+        <!-- Quick Actions -->
+        <section class="section">
+            <h2>Quick Actions</h2>
+
+            <div class="quick-actions">
+                <div class="action-card primary">
+                    <div class="action-title">Manage Tasks</div>
+                    <div class="action-sub">Create and edit tasks</div>
+                </div>
+
+                <div class="action-card">
+                    <div class="action-title">View Leaderboard</div>
+                    <div class="action-sub">Check user rankings</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Total Tasks -->
+        <section class="section">
+            <div class="total-card">
+                <div>
+                    <p>Total Tasks Across All Departments</p>
+                    <h1>45</h1>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tasks by Department -->
+        <section class="section">
+            <h2>Tasks by Department</h2>
+
+            <div class="dept-grid">
+                <div class="dept-card it">IT <strong>15</strong></div>
+                <div class="dept-card hr">HR <strong>12</strong></div>
+                <div class="dept-card fin">Finance <strong>10</strong></div>
+                <div class="dept-card ops">Operations <strong>8</strong></div>
+            </div>
+        </section>
+    </div>
+</div>

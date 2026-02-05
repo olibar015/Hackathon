@@ -1,0 +1,46 @@
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <div class="welcome">Welcome, {{ displayName }}!</div>
+        <div class="role">{{ roleLabel }}</div>
+    </div>
+
+    <nav class="nav">
+        <!-- ADMIN MENU -->
+        <ng-container *ngIf="role === 'admin'; else employeeMenu">
+            <a class="nav-item" routerLink="/admin-board" routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a class="nav-item" routerLink="/task-management" routerLinkActive="active">
+                <span class="nav-icon">≡</span>
+                <span>Task Management</span>
+            </a>
+
+            <a class="nav-item" routerLink="/leaderboards" routerLinkActive="active">
+                <span class="nav-icon">🏆</span>
+                <span>Leaderboard</span>
+            </a>
+        </ng-container>
+
+        <!-- EMPLOYEE MENU -->
+        <ng-template #employeeMenu>
+            <a class="nav-item" routerLink="/participant-board" routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a class="nav-item" routerLink="/bingo-task" routerLinkActive="active">
+                <span class="nav-icon">✅</span>
+                <span>Bingo Task</span>
+            </a>
+
+            <a class="nav-item" routerLink="/leaderboards" routerLinkActive="active">
+                <span class="nav-icon">🏆</span>
+                <span>Leaderboard</span>
+            </a>
+        </ng-template>
+    </nav>
+</aside>

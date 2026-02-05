@@ -1,82 +1,80 @@
-/* Container for the whole screen */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
 .screen {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  background: #ffffff;
-  padding: 24px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    background: #ffffff;
+    padding: 24px;
 }
 
-/* Content wrapper */
 .content {
-  width: 100%;
-  max-width: 390px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 40px;
+    width: 100%;
+    max-width: 390px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 40px;
 }
 
-/* Logo */
 .logo {
-  width: 190px;
-  margin-bottom: 28px;
+    width: 190px;
+    margin-bottom: 28px;
 }
 
-/* Form styling */
 .form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-/* Labels */
 .label {
-  font-size: 14px;
-  color: #555;
-  margin-top: 6px;
+    font-size: 14px;
+    color: #555;
+    margin-top: 6px;
+    font-family: 'Poppins', sans-serif;
 }
 
-/* Inputs */
 .input {
-  height: 46px;
-  border-radius: 10px;
-  border: none;
-  background: #e9e9e9;
-  padding: 0 14px;
-  font-size: 14px;
-  outline: none;
+    font-family: 'Poppins', sans-serif;
+    height: 46px;
+    border-radius: 10px;
+    border: none;
+    background: #e9e9e9;
+    padding: 0 14px;
+    font-size: 14px;
+    outline: none;
 }
 
 .input:focus {
-  box-shadow: 0 0 0 3px rgba(10, 103, 182, 0.18);
+    box-shadow: 0 0 0 3px rgba(10, 103, 182, 0.18);
 }
 
-/* Login button */
 .btn {
-  margin-top: 18px;
-  height: 52px;
-  width: 100%;
-  max-width: 300px;
-  align-self: center;
-  border: none;
-  border-radius: 12px;
-  background: #0a67b6;
-  color: #fff;
-  font-weight: 700;
-  cursor: pointer;
+    margin-top: 18px;
+    height: 52px;
+    width: 100%;
+    max-width: 300px;
+    align-self: center;
+    border: none;
+    border-radius: 12px;
+    background: #0a67b6;
+    color: #fff;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
 }
 
 .btn:hover {
-  background: #084f8c;
+    background: #084f8c;
 }
 
-/* Back link */
 .back {
-  margin-top: 12px;
-  text-align: center;
-  text-decoration: none;
-  color: grey;
-  font-size: 14px;
+    margin-top: 12px;
+    text-align: center;
+    text-decoration: none;
+    color: grey;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
 }
