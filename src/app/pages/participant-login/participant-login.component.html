@@ -1,1 +1,29 @@
-<p>participant-login works!</p>
+<div class="screen">
+    <div class="content">
+        <!-- Logo -->
+        <img src="assets/bingotask-logo.png" alt="BingoTask Logo" class="logo" />
+
+        <!-- Form -->
+        <form class="form" autocomplete="off">
+            <label class="label" for="email">Email</label>
+            <input class="input" id="email" type="email" />
+
+            <label class="label" for="password">Password</label>
+            <input class="input" id="password" type="password" />
+
+            <button class="btn" type="button">
+                Login
+            </button>
+
+            <a routerLink="/landing" class="back" type="button">
+                Back
+            </a>
+
+            <!-- Signup text -->
+            <div class="signup">
+                <span>Don't have an account?</span>
+                <a routerLink="/registration" class="register">Sign up</a>
+            </div>
+        </form>
+    </div>
+</div>
