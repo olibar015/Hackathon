@@ -2,13 +2,26 @@
     <div class="auth-card">
         <!-- Logo -->
         <div class="logo-wrap">
-            <!-- Replace with your actual logo path -->
-            <img src="assets/bingotask-logo.png" alt="BingoTask" class="logo" />
+            <img src="assets/bingotask-logo.jpeg" alt="BingoTask" class="logo" />
         </div>
 
         <h3 class="title">REGISTER</h3>
 
         <form class="form">
+            <!-- Role -->
+            <label class="label">Role</label>
+            <div class="role-group">
+                <label class="role-option">
+                    <input type="radio" name="role" value="employee" checked />
+                    <span>Employee</span>
+                </label>
+
+                <label class="role-option">
+                    <input type="radio" name="role" value="admin" />
+                    <span>Admin</span>
+                </label>
+            </div>
+
             <label class="label" for="email">Email</label>
             <input id="email" type="email" class="input" placeholder="Enter email" />
 
@@ -22,7 +35,7 @@
 
             <p class="footer-text">
                 Already have an account?
-                <a href="#" class="link">Login</a>
+                <a routerLink="/landing" class="link">Login</a>
             </p>
         </form>
     </div>
