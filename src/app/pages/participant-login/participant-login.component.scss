@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
 .screen {
   min-height: 100vh;
   display: flex;
@@ -31,9 +33,11 @@
   font-size: 14px;
   color: #555;
   margin-top: 6px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .input {
+  font-family: 'Poppins', sans-serif;
   height: 46px;
   border-radius: 10px;
   border: none;
@@ -58,6 +62,7 @@
   background: #0a67b6;
   color: #fff;
   font-weight: 700;
+  font-family: 'Poppins', sans-serif;
   cursor: pointer;
 }
 
@@ -71,22 +76,25 @@
   justify-content: center;
   gap: 6px;
   font-size: 14px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .register {
   color: #0a67b6;
   text-decoration: none;
   font-weight: 600;
+  font-family: 'Poppins', sans-serif;
 }
 
 .register:hover {
   text-decoration: underline;
 }
 
-.back{
+.back {
   margin-top: 12px;
   text-align: center;
   text-decoration: none;
   color: grey;
   font-size: 14px;
+  font-family: 'Poppins', sans-serif;
 }

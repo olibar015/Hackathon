@@ -1,0 +1,123 @@
+.dashboard-layout {
+    display: flex;
+    min-height: 98vh;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* MAIN CONTENT */
+.dashboard-content {
+    flex: 1;
+    padding: 28px 36px;
+    background: #ffffff;
+}
+
+.page-title {
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.page-subtitle {
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 20px;
+}
+
+/* SECTIONS */
+.section {
+    margin-top: 24px;
+}
+
+.section h2 {
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+/* QUICK ACTIONS */
+.quick-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.action-card {
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    cursor: pointer;
+}
+
+.action-card.primary {
+    background: #0a67b6;
+    color: #fff;
+}
+
+.action-title {
+    font-weight: 600;
+}
+
+.action-sub {
+    font-size: 13px;
+    opacity: 0.85;
+}
+
+/* TOTAL CARD */
+.total-card {
+    background: linear-gradient(180deg, #0a67b6, #074f90);
+    color: white;
+    padding: 22px;
+    border-radius: 12px;
+}
+
+.total-card h1 {
+    font-size: 42px;
+    margin: 0;
+}
+
+/* DEPARTMENTS */
+.dept-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.dept-card {
+    padding: 20px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.dept-card strong {
+    display: block;
+    font-size: 28px;
+}
+
+/* COLORS */
+.it {
+    background: #eef5ff;
+    color: #0a67b6;
+}
+
+.hr {
+    background: #eefcf1;
+    color: #16a34a;
+}
+
+.fin {
+    background: #f6efff;
+    color: #7c3aed;
+}
+
+.ops {
+    background: #fff1e6;
+    color: #f97316;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+
+    .quick-actions,
+    .dept-grid {
+        grid-template-columns: 1fr;
+    }
+}
