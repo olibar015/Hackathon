@@ -8,6 +8,7 @@ import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard
 import { SidebarComponent } from './pages/sidebar/sidebar.component';
 import { TaskManagementComponent } from './pages/task-management/task-management.component';
 import { LeaderboardsComponent } from './pages/leaderboards/leaderboards.component';
+import { BingoTaskComponent } from './pages/bingo-task/bingo-task.component';
 
 
 export const routes: Routes = [
@@ -22,6 +23,7 @@ export const routes: Routes = [
   { path: 'sidebar', component: SidebarComponent },
   { path: 'task-management', component: TaskManagementComponent },
   { path: 'leaderboards', component: LeaderboardsComponent },
+  { path: 'bingo-task', component: BingoTaskComponent},
 
 
 
