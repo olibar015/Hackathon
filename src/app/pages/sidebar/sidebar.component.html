@@ -19,7 +19,11 @@
             </a>
 
             <a class="nav-item" routerLink="/leaderboards" routerLinkActive="active">
-                <span class="nav-icon">🏆</span>
+                <span class="nav-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="img" focusable="false">
+                        <path d="M6 4h12v3a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5V4zm3 11h6v3H9v-3zm-2 3h10v2H7v-2z" />
+                    </svg>
+                </span>
                 <span>Leaderboard</span>
             </a>
         </ng-container>
@@ -38,9 +42,23 @@
             </a>
 
             <a class="nav-item" routerLink="/leaderboards" routerLinkActive="active">
-                <span class="nav-icon">🏆</span>
+                <span class="nav-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="img" focusable="false">
+                        <path d="M6 4h12v3a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5V4zm3 11h6v3H9v-3zm-2 3h10v2H7v-2z" />
+                    </svg>
+                </span>
                 <span>Leaderboard</span>
             </a>
         </ng-template>
     </nav>
+
+    <!-- Logout (bottom) -->
+    <div class="sidebar-footer">
+        <button class="nav-item logout" type="button" (click)="logout()">
+            <span class="nav-icon">⎋</span>
+            <span>Logout</span>
+        </button>
+    </div>
+
+
 </aside>

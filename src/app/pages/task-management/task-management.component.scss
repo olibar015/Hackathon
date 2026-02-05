@@ -29,11 +29,13 @@
     font-size: 28px;
     font-weight: 600;
     color: #111;
+    font-family: 'Poppins', sans-serif;
 }
 
 .subtitle {
     margin: 6px 0 0;
     font-size: 13px;
+    font-family: 'Poppins', sans-serif;
     color: #6b7280;
 }
 
@@ -45,6 +47,7 @@
     border-radius: 10px;
     padding: 10px 14px;
     font-weight: 600;
+    font-family: 'Poppins', sans-serif;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -64,6 +67,7 @@
     border-radius: 6px;
     background: rgba(255, 255, 255, 0.18);
     font-weight: 800;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* Grid of cards */
@@ -90,12 +94,14 @@
     margin: 0;
     font-size: 15px;
     font-weight: 600;
+    font-family: 'Poppins', sans-serif;
     color: #111;
 }
 
 .task-desc {
     margin: 6px 0 10px;
     font-size: 12px;
+    font-family: 'Poppins', sans-serif;
     color: #6b7280;
 }
 
@@ -107,6 +113,7 @@
 
 .dept-badge {
     font-size: 11px;
+    font-family: 'Poppins', sans-serif;
     font-weight: 700;
     color: #fff;
     background: #0a67b6;
@@ -117,6 +124,7 @@
 .pts {
     font-size: 12px;
     font-weight: 600;
+    font-family: 'Poppins', sans-serif;
     color: #0a67b6;
 }
 
@@ -145,6 +153,7 @@
     font-size: 14px;
     padding: 6px 8px;
     border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
 }
 
 .icon-btn:hover {

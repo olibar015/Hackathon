@@ -1,0 +1,30 @@
+<div class="dialog-card">
+    <div class="modal-header">
+        <h3>Create Task</h3>
+        <button class="icon-x" type="button" (click)="close()">✕</button>
+    </div>
+
+    <form [formGroup]="taskForm" class="modal-body">
+        <label class="label">Name of task</label>
+        <input class="input" formControlName="name" type="text" />
+
+        <label class="label">Description</label>
+        <textarea class="input textarea" formControlName="description" rows="3"></textarea>
+
+        <label class="label">Department</label>
+        <select class="input" formControlName="department">
+            <option value="" disabled>Select department</option>
+            <option *ngFor="let d of departments" [value]="d">{{ d }}</option>
+        </select>
+
+        <label class="label">Points</label>
+        <input class="input" formControlName="points" type="number" min="1" />
+    </form>
+
+    <div class="modal-footer">
+        <button class="btn-outline" type="button" (click)="close()">Cancel</button>
+        <button class="btn-primary" type="button" (click)="create()" [disabled]="taskForm.invalid">
+            Create
+        </button>
+    </div>
+</div>

@@ -24,6 +24,7 @@ export const routes: Routes = [
   { path: 'task-management', component: TaskManagementComponent },
   { path: 'bingo-task', component: BingoTaskComponent },
   { path: 'leaderboards', component: LeaderboardsComponent },
+  { path: 'bingo-task', component: BingoTaskComponent},
 
 
   { path: '**', redirectTo: 'landing' }
