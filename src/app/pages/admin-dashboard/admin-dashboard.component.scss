@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
 .dashboard-layout {
     display: flex;
     min-height: 98vh;
@@ -14,11 +16,13 @@
 .page-title {
     font-size: 28px;
     font-weight: 600;
+    font-family: 'Poppins', sans-serif;
     margin: 0;
 }
 
 .page-subtitle {
     font-size: 13px;
+    font-family: 'Poppins', sans-serif;
     color: #6b7280;
     margin-bottom: 20px;
 }
@@ -30,35 +34,8 @@
 
 .section h2 {
     font-size: 16px;
+    font-family: 'Poppins', sans-serif;
     margin-bottom: 12px;
-}
-
-/* QUICK ACTIONS */
-.quick-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-
-.action-card {
-    padding: 16px;
-    border-radius: 10px;
-    border: 1px solid #e5e7eb;
-    cursor: pointer;
-}
-
-.action-card.primary {
-    background: #0a67b6;
-    color: #fff;
-}
-
-.action-title {
-    font-weight: 600;
-}
-
-.action-sub {
-    font-size: 13px;
-    opacity: 0.85;
 }
 
 /* TOTAL CARD */
@@ -71,6 +48,7 @@
 
 .total-card h1 {
     font-size: 42px;
+    font-family: 'Poppins', sans-serif;
     margin: 0;
 }
 
@@ -85,11 +63,13 @@
     padding: 20px;
     border-radius: 12px;
     font-weight: 600;
+    font-family: 'Poppins', sans-serif;
 }
 
 .dept-card strong {
     display: block;
     font-size: 28px;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* COLORS */

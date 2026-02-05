@@ -1,49 +1,61 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-
+/* ===== BASE SIDEBAR ===== */
 .sidebar {
-    width: 240px;
-    min-height: 98vh;
+    height: 100vh;
     background: #0a67b6;
     color: #fff;
-    font-family: 'Poppins', sans-serif;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+
+    /* adaptive width */
+    width: clamp(220px, 18vw, 260px);
+
+    /* smooth resize + slide */
+    transition: width 0.25s ease, transform 0.25s ease;
 }
 
+/* ===== HEADER ===== */
 .sidebar-header {
-    padding: 22px 18px;
+    padding: 18px 16px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .welcome {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
-    line-height: 1.2;
 }
 
 .role {
-    margin-top: 6px;
     font-size: 12px;
     opacity: 0.85;
 }
 
+/* ===== NAV ===== */
 .nav {
-    padding: 14px;
+    flex: 1;
+    padding: 14px 10px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
 }
 
+/* shared style for <a> and <button> */
 .nav-item {
+    width: 100%;
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 12px 14px;
     border-radius: 10px;
+
     color: #fff;
-    text-decoration: none;
     font-size: 14px;
-    font-weight: 500;
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+
     transition: background 0.15s ease, color 0.15s ease;
 }
 
@@ -57,34 +69,82 @@
     font-weight: 600;
 }
 
+/* ===== ICON ===== */
 .nav-icon {
     width: 28px;
     height: 28px;
+    min-width: 28px;
     border-radius: 8px;
     display: grid;
     place-items: center;
-    background: rgba(255, 255, 255, 0.18);
     font-size: 14px;
+    background: rgba(255, 255, 255, 0.18);
+}
 
-    svg {
-        width: 16px;
-        height: 16px;
-        fill: #ffffff;
+/* ===== FOOTER (LOGOUT) ===== */
+.sidebar-footer {
+    padding: 14px 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* logout matches nav-item */
+.logout:hover {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.logout .nav-icon {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+/* ===== TABLET ===== */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .welcome {
+        font-size: 15px;
     }
 }
 
-.nav-item.active .nav-icon {
-    background: rgba(10, 103, 182, 0.12);
-
-    svg {
-        fill: #0a67b6;
-    }
-}
-
-/* Mobile */
+/* ===== MOBILE (ICON-ONLY) ===== */
 @media (max-width: 768px) {
     .sidebar {
-        width: 100%;
-        min-height: auto;
+        width: 64px;
+    }
+
+    .sidebar-header {
+        padding: 12px 8px;
+        text-align: center;
+    }
+
+    .welcome,
+    .role {
+        display: none;
+    }
+
+    .nav-item {
+        justify-content: center;
+        padding: 12px;
+    }
+
+    .nav-item span:not(.nav-icon) {
+        display: none;
+    }
+}
+
+/* ===== EXTRA SMALL (DRAWER MODE) ===== */
+@media (max-width: 480px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        width: 240px;
+        transform: translateX(-100%);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
     }
 }
