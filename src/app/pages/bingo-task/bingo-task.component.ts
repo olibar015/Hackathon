@@ -1,3 +1,4 @@
+
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
@@ -16,6 +17,7 @@ export interface BingoTask {
   styleUrl: './bingo-task.component.scss'
 })
 export class BingoTaskComponent {
+
   completedCount = 0;
   totalTasks = 25;
 

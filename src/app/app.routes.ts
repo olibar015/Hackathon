@@ -26,6 +26,6 @@ export const routes: Routes = [
   { path: 'bingo-task', component: BingoTaskComponent},
 
 
-
   { path: '**', redirectTo: 'landing' }
 ];
+
