@@ -1,1 +1,23 @@
-<p>admin-login works!</p>
+<div class="screen">
+  <div class="content">
+    <!-- Logo -->
+    <img src="assets/bingotask-logo.png" alt="BingoTask Logo" class="logo" />
+
+    <!-- Form -->
+    <form class="form" autocomplete="off">
+      <label class="label" for="email">Admin Email</label>
+      <input class="input" id="email" type="email" />
+
+      <label class="label" for="password">Password</label>
+      <input class="input" id="password" type="password" />
+
+      <button class="btn" type="button" routerLink="/admin-board">
+        Login
+      </button>
+
+      <a routerLink="/landing" class="back">
+        Back
+      </a>
+    </form>
+  </div>
+</div>

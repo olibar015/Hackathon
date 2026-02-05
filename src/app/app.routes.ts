@@ -14,9 +14,9 @@ export const routes: Routes = [
   { path: 'participant-login', component: ParticipantLoginComponent },
   { path: 'admin-login', component: AdminLoginComponent},
   { path: 'registration', component: RegistrationComponent},
-  { path: 'paticipant-board', component: ParticipantBoardComponent },
+  { path: 'participant-board', component: ParticipantBoardComponent },
   { path: 'admin-board', component: AdminDashboardComponent },
   
 
-  { path: '**', redirectTo: 'login' }
+  { path: '**', redirectTo: 'landing' }
 ];
