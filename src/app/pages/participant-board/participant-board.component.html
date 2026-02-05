@@ -1,1 +1,92 @@
-<p>participant-board works!</p>
+<div class="board-container">
+
+  <h1 class="title">Task BINGO Challenge</h1>
+  <p class="subtitle">
+    Complete tasks to earn points and unlock BINGO lines for bonus rewards!
+  </p>
+
+  <!-- USER CARD -->
+  <div class="card user-card">
+
+    <div class="user-left">
+      <h3>{{ username }}</h3>
+      <span class="level-badge">Level {{ level }}</span>
+
+      <div class="xp-section">
+        <div class="xp-header">
+          <span>XP Progress</span>
+          <span class="xp-text">{{ currentXP }} / {{ maxXP }} XP</span>
+        </div>
+
+        <div class="progress-bar">
+          <div
+            class="progress-fill"
+            [style.width.%]="xpProgress"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="user-right">
+      <div class="stat-box">
+        ⭐
+        <div class="stat-content">
+          <span class="stat-label">Total Points</span>
+          <span class="stat-value">{{ totalPoints }}</span>
+        </div>
+      </div>
+
+      <div class="stat-box streak">
+        🔥
+        <div class="stat-content">
+          <span class="stat-label">Streak</span>
+          <span class="stat-value">{{ currentStreak }} days</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- STREAKS -->
+  <div class="card">
+    <h2>Streak & Achievements</h2>
+
+    <div class="streak-row">
+      <div class="streak-card current">
+        🔥
+        <div>
+          <h4>Current Streak</h4>
+          <p class="big">{{ currentStreak }}</p>
+          <span>Keep it going! +5 pts/day</span>
+        </div>
+      </div>
+
+      <div class="streak-card best">
+        📈
+        <div>
+          <h4>Best Streak</h4>
+          <p class="big">{{ bestStreak }}</p>
+          <span>Your personal record!</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECENT ACHIEVEMENTS BOX -->
+    <h3 class="section-title">Recent Achievements</h3>
+
+    <div class="achievement-box">
+      <div
+        class="achievement"
+        *ngFor="let a of achievements"
+        [class.completed]="a.completed"
+      >
+        🏅
+        <div>
+          <strong>{{ a.title }}</strong>
+          <p>{{ a.description }}</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -24,6 +24,6 @@ export const routes: Routes = [
   { path: 'leaderboards', component: LeaderboardsComponent },
 
 
-
   { path: '**', redirectTo: 'landing' }
 ];
+
