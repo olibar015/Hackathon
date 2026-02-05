@@ -1,0 +1,64 @@
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <div class="welcome">Welcome, {{ displayName }}!</div>
+        <div class="role">{{ roleLabel }}</div>
+    </div>
+
+    <nav class="nav">
+        <!-- ADMIN MENU -->
+        <ng-container *ngIf="role === 'admin'; else employeeMenu">
+            <a class="nav-item" routerLink="/admin-board" routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a class="nav-item" routerLink="/task-management" routerLinkActive="active">
+                <span class="nav-icon">≡</span>
+                <span>Task Management</span>
+            </a>
+
+            <a class="nav-item" routerLink="/leaderboards" routerLinkActive="active">
+                <span class="nav-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="img" focusable="false">
+                        <path d="M6 4h12v3a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5V4zm3 11h6v3H9v-3zm-2 3h10v2H7v-2z" />
+                    </svg>
+                </span>
+                <span>Leaderboard</span>
+            </a>
+        </ng-container>
+
+        <!-- EMPLOYEE MENU -->
+        <ng-template #employeeMenu>
+            <a class="nav-item" routerLink="/participant-board" routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a class="nav-item" routerLink="/bingo-task" routerLinkActive="active">
+                <span class="nav-icon">✅</span>
+                <span>Bingo Task</span>
+            </a>
+
+            <a class="nav-item" routerLink="/leaderboards" routerLinkActive="active">
+                <span class="nav-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="img" focusable="false">
+                        <path d="M6 4h12v3a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5V4zm3 11h6v3H9v-3zm-2 3h10v2H7v-2z" />
+                    </svg>
+                </span>
+                <span>Leaderboard</span>
+            </a>
+        </ng-template>
+    </nav>
+
+    <!-- Logout (bottom) -->
+    <div class="sidebar-footer">
+        <button class="nav-item logout" type="button" (click)="logout()">
+            <span class="nav-icon">⎋</span>
+            <span>Logout</span>
+        </button>
+    </div>
+
+
+</aside>

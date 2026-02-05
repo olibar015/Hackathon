@@ -1,0 +1,150 @@
+/* ===== BASE SIDEBAR ===== */
+.sidebar {
+    height: 100vh;
+    background: #0a67b6;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    /* adaptive width */
+    width: clamp(220px, 18vw, 260px);
+
+    /* smooth resize + slide */
+    transition: width 0.25s ease, transform 0.25s ease;
+}
+
+/* ===== HEADER ===== */
+.sidebar-header {
+    padding: 18px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.welcome {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.role {
+    font-size: 12px;
+    opacity: 0.85;
+}
+
+/* ===== NAV ===== */
+.nav {
+    flex: 1;
+    padding: 14px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* shared style for <a> and <button> */
+.nav-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 10px;
+
+    color: #fff;
+    font-size: 14px;
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.nav-item.active {
+    background: #ffffff;
+    color: #0a67b6;
+    font-weight: 600;
+}
+
+/* ===== ICON ===== */
+.nav-icon {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.18);
+}
+
+/* ===== FOOTER (LOGOUT) ===== */
+.sidebar-footer {
+    padding: 14px 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* logout matches nav-item */
+.logout:hover {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.logout .nav-icon {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+/* ===== TABLET ===== */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .welcome {
+        font-size: 15px;
+    }
+}
+
+/* ===== MOBILE (ICON-ONLY) ===== */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 64px;
+    }
+
+    .sidebar-header {
+        padding: 12px 8px;
+        text-align: center;
+    }
+
+    .welcome,
+    .role {
+        display: none;
+    }
+
+    .nav-item {
+        justify-content: center;
+        padding: 12px;
+    }
+
+    .nav-item span:not(.nav-icon) {
+        display: none;
+    }
+}
+
+/* ===== EXTRA SMALL (DRAWER MODE) ===== */
+@media (max-width: 480px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        width: 240px;
+        transform: translateX(-100%);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+}

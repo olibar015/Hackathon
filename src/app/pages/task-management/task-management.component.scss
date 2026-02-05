@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+:host {
+    font-family: 'Poppins', sans-serif;
+}
+
+.page-layout {
+    display: flex;
+    min-height: 100vh;
+    background: #fff;
+}
+
+/* MAIN CONTENT */
+.content {
+    flex: 1;
+    padding: 26px 42px;
+}
+
+.topbar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.title {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+    color: #111;
+    font-family: 'Poppins', sans-serif;
+}
+
+.subtitle {
+    margin: 6px 0 0;
+    font-size: 13px;
+    font-family: 'Poppins', sans-serif;
+    color: #6b7280;
+}
+
+/* Create button */
+.create-btn {
+    border: none;
+    background: #0a67b6;
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.08);
+}
+
+.create-btn:hover {
+    background: #084f8c;
+}
+
+.plus {
+    display: inline-grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.18);
+    font-weight: 800;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Grid of cards */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 10px;
+}
+
+/* Card */
+.task-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #fff;
+    padding: 16px 16px 12px;
+    min-height: 175px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.task-title {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    color: #111;
+}
+
+.task-desc {
+    margin: 6px 0 10px;
+    font-size: 12px;
+    font-family: 'Poppins', sans-serif;
+    color: #6b7280;
+}
+
+.meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dept-badge {
+    font-size: 11px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: #fff;
+    background: #0a67b6;
+    border-radius: 6px;
+    padding: 4px 8px;
+}
+
+.pts {
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    color: #0a67b6;
+}
+
+/* footer */
+.task-footer {
+    margin-top: 12px;
+}
+
+.divider {
+    height: 1px;
+    background: #e5e7eb;
+    margin: 10px 0 8px;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.icon-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #6b7280;
+    font-size: 14px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.icon-btn:hover {
+    background: #f3f4f6;
+    color: #111;
+}
+
+/* responsive */
+@media (max-width: 1100px) {
+    .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .page-layout {
+        flex-direction: column;
+    }
+
+    .content {
+        padding: 18px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}

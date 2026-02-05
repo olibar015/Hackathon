@@ -1,0 +1,89 @@
+<div class="page-layout">
+    <!-- Sidebar -->
+    <app-sidebar role="admin" displayName="User"></app-sidebar>
+
+    <!-- Content -->
+    <main class="content">
+        <div class="topbar">
+            <div>
+                <h1 class="title">Task Management</h1>
+                <p class="subtitle">Create, edit, and manage tasks for the BINGO challenge</p>
+            </div>
+
+            <button class="create-btn" type="button" (click)="openCreateTaskDialog()">
+                <span class="plus">+</span>
+                Create Task
+            </button>
+
+
+        </div>
+
+        <section class="grid">
+            <!-- Card 1 -->
+            <div class="task-card">
+                <div class="task-head">
+                    <h3 class="task-title">Complete Daily Exercise</h3>
+                    <p class="task-desc">Complete 30 minutes of physical activity</p>
+
+                    <div class="meta">
+                        <span class="dept-badge">IT</span>
+                        <span class="pts">50 pts</span>
+                    </div>
+                </div>
+
+                <div class="task-footer">
+                    <div class="divider"></div>
+                    <div class="actions">
+                        <button class="icon-btn" type="button" title="Edit">✎</button>
+                        <button class="icon-btn" type="button" title="Delete">🗑</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="task-card">
+                <div class="task-head">
+                    <h3 class="task-title">Read for 20 Minutes</h3>
+                    <p class="task-desc">Read any book or article</p>
+
+                    <div class="meta">
+                        <span class="dept-badge">IT</span>
+                        <span class="pts">30 pts</span>
+                    </div>
+                </div>
+
+                <div class="task-footer">
+                    <div class="divider"></div>
+                    <div class="actions">
+                        <button class="icon-btn" type="button" title="Edit">✎</button>
+                        <button class="icon-btn" type="button" title="Delete">🗑</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="task-card">
+                <div class="task-head">
+                    <h3 class="task-title">Drink 8 Glasses of Water</h3>
+                    <p class="task-desc">Stay hydrated throughout the day</p>
+
+                    <div class="meta">
+                        <span class="dept-badge">IT</span>
+                        <span class="pts">25 pts</span>
+                    </div>
+                </div>
+
+                <div class="task-footer">
+                    <div class="divider"></div>
+                    <div class="actions">
+                        <button class="icon-btn" type="button" title="Edit">✎</button>
+                        <button class="icon-btn" type="button" title="Delete">🗑</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="task-card">
+                <div class="task-head">
+                    <h3 class="task-title">Complete a Work Task</h3>
+                    <p class="task-desc">Finish one important work-related task</p>

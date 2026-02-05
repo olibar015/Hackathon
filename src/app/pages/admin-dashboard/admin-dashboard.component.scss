@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+.dashboard-layout {
+    display: flex;
+    min-height: 98vh;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* MAIN CONTENT */
+.dashboard-content {
+    flex: 1;
+    padding: 28px 36px;
+    background: #ffffff;
+}
+
+.page-title {
+    font-size: 28px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+}
+
+.page-subtitle {
+    font-size: 13px;
+    font-family: 'Poppins', sans-serif;
+    color: #6b7280;
+    margin-bottom: 20px;
+}
+
+/* SECTIONS */
+.section {
+    margin-top: 24px;
+}
+
+.section h2 {
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 12px;
+}
+
+/* TOTAL CARD */
+.total-card {
+    background: linear-gradient(180deg, #0a67b6, #074f90);
+    color: white;
+    padding: 22px;
+    border-radius: 12px;
+}
+
+.total-card h1 {
+    font-size: 42px;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+}
+
+/* DEPARTMENTS */
+.dept-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.dept-card {
+    padding: 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+}
+
+.dept-card strong {
+    display: block;
+    font-size: 28px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* COLORS */
+.it {
+    background: #eef5ff;
+    color: #0a67b6;
+}
+
+.hr {
+    background: #eefcf1;
+    color: #16a34a;
+}
+
+.fin {
+    background: #f6efff;
+    color: #7c3aed;
+}
+
+.ops {
+    background: #fff1e6;
+    color: #f97316;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+
+    .quick-actions,
+    .dept-grid {
+        grid-template-columns: 1fr;
+    }
+}

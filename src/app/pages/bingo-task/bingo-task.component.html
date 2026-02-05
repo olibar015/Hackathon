@@ -1,0 +1,47 @@
+<div class="bingo-container">
+  <header class="bingo-header">
+    <h1>Task BINGO Challenge</h1>
+    <p>Complete tasks to earn points and unlock BINGO lines for bonus rewards!</p>
+  </header>
+
+  <section class="bingo-card">
+    <div class="card-header">
+      <h2>BINGO Challenge</h2>
+      <div class="completion-badge">{{ completedCount }} / {{ totalTasks }} Completed</div>
+    </div>
+
+    <div class="bingo-wrapper">
+      <div class="bingo-columns">
+        <div class="bingo-column" *ngFor="let col of [0,1,2,3,4]">
+          <div class="column-letter">{{ ['B','I','N','G','O'][col] }}</div>
+          <div class="bingo-grid-column">
+            <div class="bingo-cell"
+                 *ngFor="let task of tasks.slice(col * 5, col * 5 + 5)"
+                 [class.completed]="task.status === 'completed'"
+                 [class.bingoLine]="task.status === 'bingoLine'">
+              <div class="cell-content">
+                <div class="task-name">{{ task.name }}</div>
+                <div class="task-points">+{{ task.points }}pts</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item">
+        <span class="legend-box bingoLine"></span>
+        <span>BINGO Line (x2 bonus)</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-box completed"></span>
+        <span>Completed</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-box available"></span>
+        <span>Available</span>
+      </div>
+    </div>
+  </section>
+</div>

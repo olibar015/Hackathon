@@ -1,1 +1,42 @@
-<p>registration works!</p>
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <!-- Logo -->
+        <div class="logo-wrap">
+            <img src="assets/bingotask-logo.jpeg" alt="BingoTask" class="logo" />
+        </div>
+
+        <h3 class="title">REGISTER</h3>
+
+        <form class="form">
+            <!-- Role -->
+            <label class="label">Role</label>
+            <div class="role-group">
+                <label class="role-option">
+                    <input type="radio" name="role" value="employee" checked />
+                    <span>Employee</span>
+                </label>
+
+                <label class="role-option">
+                    <input type="radio" name="role" value="admin" />
+                    <span>Admin</span>
+                </label>
+            </div>
+
+            <label class="label" for="email">Email</label>
+            <input id="email" type="email" class="input" placeholder="Enter email" />
+
+            <label class="label" for="password">Password</label>
+            <input id="password" type="password" class="input" placeholder="Enter password" />
+
+            <label class="label" for="confirm">Confirm Password</label>
+            <input id="confirm" type="password" class="input" placeholder="Confirm password" />
+
+            <button type="button" class="btn-primary">REGISTER</button>
+
+            <p class="footer-text">
+                Already have an account?
+                <a routerLink="/landing" class="link">Login</a>
+            </p>
+        </form>
+    </div>
+</div>
