@@ -22,6 +22,7 @@ export const routes: Routes = [
   { path: 'admin-board', component: AdminDashboardComponent },
   { path: 'sidebar', component: SidebarComponent },
   { path: 'task-management', component: TaskManagementComponent },
+  { path: 'bingo-task', component: BingoTaskComponent },
   { path: 'leaderboards', component: LeaderboardsComponent },
   { path: 'bingo-task', component: BingoTaskComponent},
 

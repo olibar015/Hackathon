@@ -1,6 +1,13 @@
 
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+interface BingoCell {
+  text: string;
+  points: number;
+  flipped: boolean;
+}
 
 export interface BingoTask {
   id: number;
@@ -14,7 +21,7 @@ export interface BingoTask {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './bingo-task.component.html',
-  styleUrl: './bingo-task.component.scss'
+  styleUrls: ['./bingo-task.component.scss']
 })
 export class BingoTaskComponent {
 

@@ -1,11 +1,28 @@
+/* ===== LAYOUT ===== */
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f6f7f9;
+}
+
+app-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+}
+
+/* ===== MAIN CONTENT ===== */
 .board-container {
+  flex: 1;
   padding: 32px;
   background: #f6f7f9;
   min-height: 100vh;
+  overflow-y: auto;
 }
 
+/* ===== PAGE HEADER ===== */
 .title {
   text-align: center;
+  margin-bottom: 4px;
 }
 
 .subtitle {
@@ -14,6 +31,7 @@
   margin-bottom: 28px;
 }
 
+/* ===== CARD BASE ===== */
 .card {
   background: #ffffff;
   border-radius: 14px;
@@ -22,13 +40,25 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
 }
 
-/* USER CARD */
+/* ===== USER CARD ===== */
 .user-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
+.user-left {
+  flex: 1;
+  min-width: 300px;
+}
+
+.user-left h3 {
+  margin-bottom: 4px;
+}
+
+/* Level badge */
 .level-badge {
   display: inline-block;
   background: #1e88e5;
@@ -39,9 +69,10 @@
   margin-top: 6px;
 }
 
+/* ===== XP PROGRESS ===== */
 .xp-section {
   margin-top: 18px;
-  width: 280px;
+  width: 100%;
 }
 
 .xp-header {
@@ -66,10 +97,11 @@
   transition: width 0.3s ease;
 }
 
-/* STATS */
+/* ===== STATS ===== */
 .user-right {
   display: flex;
   gap: 16px;
+  flex-wrap: wrap;
 }
 
 .stat-box {
@@ -101,7 +133,7 @@
   font-weight: 600;
 }
 
-/* STREAK CARDS */
+/* ===== STREAK CARDS ===== */
 .streak-row {
   display: flex;
   gap: 16px;
@@ -129,7 +161,7 @@
   font-weight: bold;
 }
 
-/* ACHIEVEMENTS */
+/* ===== ACHIEVEMENTS ===== */
 .section-title {
   margin: 22px 0 12px;
 }
@@ -159,4 +191,19 @@
   background: #0d5bb5;
   color: white;
   opacity: 1;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .user-left {
+    min-width: 100%;
+  }
+
+  .xp-section {
+    width: 100%;
+  }
+
+  .streak-row {
+    flex-direction: column;
+  }
 }
