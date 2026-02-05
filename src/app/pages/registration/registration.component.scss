@@ -1,0 +1,113 @@
+/* Page center */
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+  padding: 24px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Card like mobile screen */
+.auth-card {
+  width: 360px;
+  max-width: 100%;
+  background: #ffffff;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  padding: 28px 26px;
+}
+
+/* Logo area */
+.logo-wrap {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.logo {
+  width: 90px;
+  height: auto;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+.brand {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0a5aa6;
+  letter-spacing: 0.2px;
+}
+
+.title {
+  margin: 12px 0 18px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 800;
+  color: #111;
+  letter-spacing: 1px;
+}
+
+/* Form */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.label {
+  font-size: 12px;
+  color: #666;
+  margin-top: 6px;
+}
+
+.input {
+  height: 44px;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  background: #e6e6e6;
+  padding: 0 14px;
+  font-size: 14px;
+  color: #222;
+}
+
+.input::placeholder {
+  color: #9a9a9a;
+}
+
+/* Button style matches theme */
+.btn-primary {
+  margin-top: 14px;
+  height: 46px;
+  border: none;
+  border-radius: 10px;
+  background: #0a5aa6;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  filter: brightness(0.95);
+}
+
+.footer-text {
+  margin: 14px 0 0;
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+}
+
+.link {
+  color: #0a5aa6;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
