@@ -37,34 +37,34 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public UserProfileResponse getUserProfile(String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
+  public UserProfileResponse getUserProfile(String username) {
+    User user = userRepository.findByUsername(username)
+      .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
 
-        // Calculate completed tasks count
-        Integer completedTasks = userTaskRepository.countByUser(user);
+    // Calculate completed tasks count
+    Integer completedTasks = userTaskRepository.countByUser(user);
 
-        // Get recent achievements (limit to 3 most recent)
-        var recentAchievements = achievementService.getRecentAchievements(user.getId(), 3);
+    // Get recent achievements (limit to 3 most recent)
+    List<AchievementResponse> recentAchievements = achievementService.getRecentAchievements(user.getId(), 3);
 
-        UserProfileResponse response = new UserProfileResponse();
-        response.setId(user.getId());
-        response.setUsername(user.getUsername());
-        response.setEmail(user.getEmail());
-        response.setAvatarUrl(user.getAvatarUrl());
-        response.setLevel(user.getLevel());
-        response.setXp(user.getXp());
-        response.setXpToNextLevel(user.getXpToNextLevel());
-        response.setTotalPoints(user.getTotalPoints());
-        response.setCurrentStreak(user.getCurrentStreak());
-        response.setBestStreak(user.getBestStreak());
-        response.setCompletedTasks(completedTasks);
-        response.setBingoLines(0); // You'll need to implement this
-        response.setRecentAchievements(recentAchievements);
-        response.setCreatedAt(user.getCreatedAt());
+    UserProfileResponse response = new UserProfileResponse();
+    response.setId(user.getId());
+    response.setUsername(user.getUsername());
+    response.setEmail(user.getEmail());
+    response.setAvatarUrl(user.getAvatarUrl());
+    response.setLevel(user.getLevel());
+    response.setXp(user.getXp());
+    response.setXpToNextLevel(user.getXpToNextLevel());
+    response.setTotalPoints(user.getTotalPoints());
+    response.setCurrentStreak(user.getCurrentStreak());
+    response.setBestStreak(user.getBestStreak());
+    response.setCompletedTasks(completedTasks);
+    response.setBingoLines(0); // You'll need to implement this
+    response.setRecentAchievements(recentAchievements);
+    response.setCreatedAt(user.getCreatedAt());
 
-        return response;
-    }
+    return response;
+  }
 
     public List<AchievementResponse> getUserAchievements(String username) {
         User user = userRepository.findByUsername(username)
@@ -179,4 +179,12 @@ public class UserService {
 
         return password.toString();
     }
+
+  public void updateUserRole(Long userId, User.Role role) {
+    User user = userRepository.findById(userId)
+      .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+
+    user.setRole(role);
+    userRepository.save(user);
+  }
 }

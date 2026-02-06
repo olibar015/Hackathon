@@ -4,6 +4,10 @@ import com.bingotask.dto.request.CreateTaskRequest;
 import com.bingotask.dto.request.UpdateTaskRequest;
 import com.bingotask.dto.response.ApiResponse;
 import com.bingotask.dto.response.TaskResponse;
+import com.bingotask.exception.BadRequestException;
+import com.bingotask.exception.ResourceNotFoundException;
+import com.bingotask.model.User;
+import com.bingotask.repository.UserRepository;
 import com.bingotask.service.TaskService;
 import com.bingotask.service.UserService;
 import jakarta.validation.Valid;
@@ -26,6 +30,9 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping("/tasks")
     public ResponseEntity<TaskResponse> createTask(@Valid @RequestBody CreateTaskRequest request) {
@@ -61,4 +68,22 @@ public class AdminController {
         userService.resetPassword(userId);
         return ResponseEntity.ok(new ApiResponse(true, "Password reset email sent"));
     }
+
+  @PutMapping("/users/{userId}/role")
+  @PreAuthorize("hasRole('ADMIN')")
+  public ResponseEntity<ApiResponse> updateUserRole(
+    @PathVariable Long userId,
+    @RequestParam String role) {
+
+    // Convert string to Role enum
+    User.Role roleEnum;
+    try {
+      roleEnum = User.Role.valueOf(role.toUpperCase());
+    } catch (IllegalArgumentException e) {
+      throw new BadRequestException("Invalid role: " + role);
+    }
+
+    userService.updateUserRole(userId, roleEnum);
+    return ResponseEntity.ok(new ApiResponse(true, "User role updated successfully"));
+  }
 }

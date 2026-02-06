@@ -14,26 +14,25 @@ import java.util.Collection;
 import java.util.Collections;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService { // Must implement UserDetailsService
+public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
-    @Override
-    public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(usernameOrEmail)
-                .orElseGet(() -> userRepository.findByEmail(usernameOrEmail)
-                        .orElseThrow(() -> new UsernameNotFoundException(
-                                "User not found with username or email: " + usernameOrEmail)));
+  @Override
+  public UserDetails loadUserByUsername(String identifier) throws UsernameNotFoundException {
+    // Try to find by email first, then by username
+    User user = userRepository.findByEmail(identifier)
+      .or(() -> userRepository.findByUsername(identifier))
+      .orElseThrow(() -> new UsernameNotFoundException(
+        "User not found with identifier: " + identifier
+      ));
 
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                getAuthorities(user)
-        );
-    }
-
-    private Collection<? extends GrantedAuthority> getAuthorities(User user) {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
-    }
+    return org.springframework.security.core.userdetails.User
+      .builder()
+      .username(user.getUsername())
+      .password(user.getPassword())
+      .roles(user.getRole().name())
+      .build();
+  }
 }

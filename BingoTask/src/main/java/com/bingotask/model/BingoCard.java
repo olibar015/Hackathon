@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,66 +17,80 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BingoCard {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id", nullable = false)
+  private User user;
 
-    @OneToMany(mappedBy = "bingoCard", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BingoCell> cells = new ArrayList<>();
+  @Column(name = "card_name")
+  private String cardName = "Bingo Card";
 
-    @Column(name = "is_active")
-    private Boolean isActive = true;
+  @Column(name = "start_date")
+  private LocalDate startDate;  // Add this field
 
-    @Column(name = "start_date")
-    private LocalDate startDate;
+  @Column(name = "end_date")
+  private LocalDate endDate;    // Add this field
 
-    @Column(name = "end_date")
-    private LocalDate endDate;
+  @Column(name = "is_active")
+  private Boolean isActive = true;
 
-    @Column(name = "completed_lines")
-    private Integer completedLines = 0;
+  @Column(name = "is_completed")
+  private Boolean isCompleted = false;
 
-    @Column(name = "total_points")
-    private Integer totalPoints = 0;
+  @Column(name = "completed_lines")
+  private Integer completedLines = 0;
 
-    // Helper method to add a cell
-    public void addCell(BingoCell cell) {
-        cells.add(cell);
-        cell.setBingoCard(this);
+  @Column(name = "completed_date")
+  private LocalDateTime completedDate;
+
+  @Column(name = "is_approved")
+  private Boolean isApproved = false;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "approved_by")
+  private User approvedBy;
+
+  @Column(name = "approved_date")
+  private LocalDateTime approvedDate;
+
+  @OneToMany(mappedBy = "bingoCard", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<BingoCardTask> tasks = new ArrayList<>();
+
+  @CreationTimestamp
+  @Column(name = "created_at")
+  private LocalDateTime createdAt;
+
+  // Add constructor or pre-persist method to set dates
+  @PrePersist
+  protected void onCreate() {
+    if (startDate == null) {
+      startDate = LocalDate.now();
     }
-
-    // Helper method to remove a cell
-    public void removeCell(BingoCell cell) {
-        cells.remove(cell);
-        cell.setBingoCard(null);
+    if (endDate == null) {
+      endDate = startDate.plusDays(7); // 1 week duration by default
     }
+  }
 
-    // Method to get cell at position
-    public BingoCell getCellAtPosition(int x, int y) {
-        return cells.stream()
-                .filter(cell -> cell.getPositionX() == x && cell.getPositionY() == y)
-                .findFirst()
-                .orElse(null);
-    }
+  // Helper methods
+  public boolean isReadyForApproval() {
+    return isCompleted && !isApproved;
+  }
 
-    // Method to check if cell at position is completed
-    public boolean isCellCompleted(int x, int y) {
-        BingoCell cell = getCellAtPosition(x, y);
-        return cell != null && Boolean.TRUE.equals(cell.getIsCompleted());
-    }
+  public void complete() {
+    this.isCompleted = true;
+    this.completedDate = LocalDateTime.now();
+  }
 
-    // Method to mark cell as completed
-    public void markCellAsCompleted(int x, int y, Integer pointsEarned) {
-        BingoCell cell = getCellAtPosition(x, y);
-        if (cell != null) {
-            cell.setIsCompleted(true);
-            cell.setCompletedAt(LocalDateTime.now());
-            cell.setPointsEarned(pointsEarned);
-            this.totalPoints += pointsEarned;
-        }
-    }
+  public void approve(User approver) {
+    this.isApproved = true;
+    this.approvedBy = approver;
+    this.approvedDate = LocalDateTime.now();
+  }
+
+  public void updateCompletedLines(int lines) {
+    this.completedLines = lines;
+  }
 }

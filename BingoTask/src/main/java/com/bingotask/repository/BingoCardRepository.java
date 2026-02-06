@@ -23,13 +23,31 @@ public interface BingoCardRepository extends JpaRepository<BingoCard, Long> {
     List<BingoCard> findByStartDateAfter(LocalDate date);
 
     @Query("SELECT bc FROM BingoCard bc " +
-            "WHERE bc.user = :user " +
-            "AND bc.startDate <= :date " +
-            "AND bc.endDate >= :date")
-    Optional<BingoCard> findByUserAndDate(@Param("user") User user,
-                                          @Param("date") LocalDate date);
+      "WHERE bc.user = :user " +
+      "AND bc.startDate <= :date " +
+      "AND bc.endDate >= :date")
+    Optional<BingoCard> findByUserAndDate(User user, LocalDate date);
 
     @Query("SELECT COUNT(bc) FROM BingoCard bc " +
             "WHERE bc.completedLines >= :minLines")
     Long countByCompletedLinesGreaterThanEqual(@Param("minLines") Integer minLines);
+
+  Optional<BingoCard> findByUserIdAndIsActiveTrue(Long userId);
+
+  List<BingoCard> findByUserId(Long userId);
+
+  List<BingoCard> findByIsCompletedTrueAndIsApprovedFalse();
+
+  List<BingoCard> findByIsApprovedTrue();
+
+  Optional<BingoCard> findByIdAndUserId(Long id, Long userId);
+
+  @Query("SELECT COUNT(bc) FROM BingoCard bc WHERE bc.user = :user AND bc.isCompleted = true")
+  int countCompletedBingoCardsByUser(@Param("user") User user);
+
+  @Query("SELECT COUNT(bc) FROM BingoCard bc WHERE bc.user.id = :userId")
+  int countByUserId(@Param("userId") Long userId);  // Add this method
+  // In BingoCardRepository
+  @Query("SELECT COALESCE(SUM(bc.completedLines), 0) FROM BingoCard bc WHERE bc.user.id = :userId")
+  int sumCompletedLinesByUserId(@Param("userId") Long userId);
 }

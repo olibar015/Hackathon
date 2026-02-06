@@ -34,6 +34,9 @@ public class AchievementService {
     @Autowired
     private BingoCardRepository bingoCardRepository;
 
+    @Autowired
+    private BingoCardTaskRepository bingoCardTaskRepository;
+
     public List<AchievementResponse> getUserAchievements(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
@@ -107,28 +110,31 @@ public class AchievementService {
                 .collect(Collectors.toList());
     }
 
-    private Integer calculateProgress(User user, AchievementDefinition definition) {
-        switch (definition.getCriteriaType().toUpperCase()) {
-            case "STREAK":
-                return user.getCurrentStreak();
-            case "TASK_COUNT":
-                return userTaskRepository.countByUser(user);
-            case "POINTS":
-                return user.getTotalPoints();
-            case "BINGO_LINES":
-                return bingoCardRepository.findByUserAndIsActiveTrue(user)
-                        .map(BingoCard::getCompletedLines)
-                        .orElse(0);
-            case "LEVEL":
-                return user.getLevel();
-            case "DAILY_TASKS":
-                LocalDateTime startOfDay = LocalDateTime.now().toLocalDate().atStartOfDay();
-                LocalDateTime endOfDay = LocalDateTime.now().toLocalDate().atTime(23, 59, 59);
-                return userTaskRepository.countByUserAndCompletedAtBetween(user, startOfDay, endOfDay);
-            default:
-                return 0;
-        }
+  private Integer calculateProgress(User user, AchievementDefinition definition) {
+    switch (definition.getCriteriaType().toUpperCase()) {
+      case "STREAK":
+        return user.getCurrentStreak();
+      case "TASK_COUNT":
+        return userTaskRepository.countByUser(user);
+      case "POINTS":
+        return user.getTotalPoints();
+      case "BINGO_LINES":
+        // Get the user's active bingo card and count completed lines
+        Optional<BingoCard> activeCard = bingoCardRepository.findByUserIdAndIsActiveTrue(user.getId());
+        return activeCard.map(BingoCard::getCompletedLines).orElse(0);
+      case "LEVEL":
+        return user.getLevel();
+      case "DAILY_TASKS":
+        LocalDateTime startOfDay = LocalDateTime.now().toLocalDate().atStartOfDay();
+        LocalDateTime endOfDay = LocalDateTime.now().toLocalDate().atTime(23, 59, 59);
+        return userTaskRepository.countByUserAndCompletedAtBetween(user, startOfDay, endOfDay);
+      case "COMPLETED_TASKS":
+        // Count completed bingo card tasks
+        return bingoCardTaskRepository.countByBingoCardUserAndIsCompletedTrue(user);
+      default:
+        return 0;
     }
+  }
 
     public void checkAndAwardAchievements(User user) {
         List<AchievementDefinition> definitions = achievementDefinitionRepository.findByIsActiveTrue();

@@ -43,4 +43,6 @@ public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificat
 
     @Query("SELECT t FROM Task t WHERE t.positionX IS NULL AND t.positionY IS NULL AND t.isActive = true")
     List<Task> findTasksWithoutPosition();
+    // In TaskRepository.java
+    Optional<Task> findByIdAndIsActiveTrue(Long id);
 }

@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "users")
@@ -60,10 +61,22 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Achievement> achievements = new ArrayList<>();
 
-    @CreationTimestamp
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<BingoCard> bingoCards = new ArrayList<>();
+
+
+  @CreationTimestamp
     private LocalDateTime createdAt;
 
     public enum Role {
-        USER, ADMIN
+        USER,
+        APPROVER,   // Can approve tasks for others
+        ADMIN
+    }
+  // Add helper method to get active bingo card
+    public Optional<BingoCard> getActiveBingoCard() {
+      return bingoCards.stream()
+        .filter(BingoCard::getIsActive)
+        .findFirst();
     }
 }

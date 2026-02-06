@@ -40,4 +40,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findTopUsers(@Param("offset") int offset, @Param("limit") int limit);
     long countByLastActivityDateAfter(LocalDate date);
     long countByCreatedAtAfter(LocalDateTime date);
+    boolean existsByRole(User.Role role);
 }

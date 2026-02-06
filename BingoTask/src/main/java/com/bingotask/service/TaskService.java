@@ -45,9 +45,6 @@ public class TaskService {
     @Autowired
     private BingoService bingoService;
 
-    @Autowired
-    private AchievementService achievementService;
-
     public List<Task> getTasksWithFilters(TaskFilter filter) {
         // Call static method using class name, not instance
         Specification<Task> spec = TaskSpecification.withFilters(
@@ -99,41 +96,41 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
-    public void completeTask(String username, Long taskId) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
-
-        // Check if task already completed today
-        LocalDateTime startOfDay = LocalDateTime.now().toLocalDate().atStartOfDay();
-        LocalDateTime endOfDay = LocalDateTime.now().toLocalDate().atTime(LocalTime.MAX);
-
-        boolean alreadyCompleted = userTaskRepository.existsByUserAndTaskAndCompletedAtBetween(
-                user, task, startOfDay, endOfDay);
-
-        if (alreadyCompleted) {
-            throw new BadRequestException("Task already completed today");
-        }
-
-        // Create UserTask
-        UserTask userTask = new UserTask();
-        userTask.setUser(user);
-        userTask.setTask(task);
-        userTask.setCompletedAt(LocalDateTime.now());
-        userTask.setPointsEarned(task.getPoints());
-        userTaskRepository.save(userTask);
-
-        // Update user stats
-        updateUserStats(user, task.getPoints());
-
-        // Check for achievements
-        achievementService.checkAndAwardAchievements(user);
-
-        // Update BINGO card
-        bingoService.updateBingoCard(user, task);
-    }
+//    public void completeTask(String username, Long taskId) {
+//        User user = userRepository.findByUsername(username)
+//                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+//
+//        Task task = taskRepository.findById(taskId)
+//                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+//
+//        // Check if task already completed today
+//        LocalDateTime startOfDay = LocalDateTime.now().toLocalDate().atStartOfDay();
+//        LocalDateTime endOfDay = LocalDateTime.now().toLocalDate().atTime(LocalTime.MAX);
+//
+//        boolean alreadyCompleted = userTaskRepository.existsByUserAndTaskAndCompletedAtBetween(
+//                user, task, startOfDay, endOfDay);
+//
+//        if (alreadyCompleted) {
+//            throw new BadRequestException("Task already completed today");
+//        }
+//
+//        // Create UserTask
+//        UserTask userTask = new UserTask();
+//        userTask.setUser(user);
+//        userTask.setTask(task);
+//        userTask.setCompletedAt(LocalDateTime.now());
+//        userTask.setPointsEarned(task.getPoints());
+//        userTaskRepository.save(userTask);
+//
+//        // Update user stats
+//        updateUserStats(user, task.getPoints());
+//
+//        // Check for achievements
+//        achievementService.checkAndAwardAchievements(user);
+//
+//        // Update BINGO card
+//        bingoService.updateBingoCard(user, task);
+//    }
 
     private void updateUserStats(User user, Integer points) {
         user.setTotalPoints(user.getTotalPoints() + points);
@@ -267,20 +264,10 @@ public class TaskService {
         return convertToResponse(task);
     }
 
-    public BingoCardResponse getBingoCard(String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        // Get user's active bingo card
-        // This requires BingoService to have a method to get bingo card
-        // For now, return null or implement it
-
-        // Uncomment when BingoService has this method:
-        // return bingoService.getBingoCardResponse(user.getId());
-
-        // Temporary placeholder - you need to implement this
-        throw new UnsupportedOperationException("getBingoCard not implemented yet");
-    }
+  public BingoCardResponse getBingoCard(String username) {
+    // Delegate to BingoService which handles creation if needed
+    return bingoService.getOrCreateBingoCard(username);
+  }
 
     public Map<String, Object> getUserProgress(String username) {
         User user = userRepository.findByUsername(username)
