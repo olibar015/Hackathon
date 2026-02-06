@@ -10,11 +10,18 @@ import { RouterModule, Router } from '@angular/router';
   styleUrl: './admin-login.component.scss'
 })
 export class AdminLoginComponent {
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+
+  }
+
+  email = '';
+  password = '';
+  loading = false;
+
 
   loginAsAdmin() {
     localStorage.setItem('role', 'admin');
     localStorage.setItem('displayName', 'Admin'); // palitan mo from input field if meron
-    this.router.navigateByUrl('/admin-board');
+    this.router.navigateByUrl('/admin-dashboard');
   }
 }

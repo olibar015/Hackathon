@@ -1,25 +1,22 @@
-<div class="screen">
-    <div class="content">
-        <!-- Logo -->
-        <img src="assets/bingotask-logo.jpeg" alt="BingoTask Logo" class="logo" />
+<div class="screen game-bg">
+    <div class="auth-card">
+        <div class="brand">
+            <img src="assets/bingotask-logo.png" alt="BingoTask Logo" class="logo" />
+        </div>
 
-        <!-- Form -->
-        <form class="form" autocomplete="off">
+        <form class="form" autocomplete="off" (ngSubmit)="login()" #f="ngForm">
             <label class="label" for="email">Email</label>
-            <input class="input" id="email" type="email" />
+            <input class="input" id="email" type="email" name="email" [(ngModel)]="email" required email />
 
             <label class="label" for="password">Password</label>
-            <input class="input" id="password" type="password" />
+            <input class="input" id="password" type="password" name="password" [(ngModel)]="password" required />
 
-            <button (click)="loginAsEmployee()" class="btn" type="button">
-                Login
+            <button class="btn" type="submit" [disabled]="f.invalid || loading">
+                {{ loading ? 'Logging in...' : 'Login' }}
             </button>
 
-            <a routerLink="/landing" class="back" type="button">
-                Back
-            </a>
+            <a routerLink="/landing" class="back">Back</a>
 
-            <!-- Signup text -->
             <div class="signup">
                 <span>Don't have an account?</span>
                 <a routerLink="/registration" class="register">Sign up</a>

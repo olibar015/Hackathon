@@ -1,41 +1,43 @@
-<div class="auth-wrapper">
+<div class="screen game-bg">
     <div class="auth-card">
-        <!-- Logo -->
-        <div class="logo-wrap">
-            <img src="assets/bingotask-logo.jpeg" alt="BingoTask" class="logo" />
+        <div class="brand">
+            <img src="assets/bingotask-logo.png" alt="BingoTask" class="logo" />
         </div>
 
-        <h3 class="title">REGISTER</h3>
+        <form class="form" (ngSubmit)="registerUser()" #f="ngForm" autocomplete="off">
 
-        <form class="form">
-            <!-- Role -->
-            <label class="label">Role</label>
-            <div class="role-group">
-                <label class="role-option">
-                    <input type="radio" name="role" value="employee" checked />
-                    <span>Employee</span>
-                </label>
+            <label class="label" for="department">Department</label>
+            <select ... required id="department" class="input select" name="department" [(ngModel)]="department"
+                required>
+                <option value="" disabled selected hidden>Select your department</option>
+                <option value="Technical">Technical</option>
+                <option value="Sales">Sales</option>
+                <option value="Admin/HR">Admin / HR</option>
+            </select>
 
-                <label class="role-option">
-                    <input type="radio" name="role" value="admin" />
-                    <span>Admin</span>
-                </label>
-            </div>
+            <label class="label" for="username">Username</label>
+            <input id="username" type="text" class="input" placeholder="Enter username" name="username"
+                [(ngModel)]="username" required />
 
             <label class="label" for="email">Email</label>
-            <input id="email" type="email" class="input" placeholder="Enter email" />
+            <input id="email" type="email" class="input" placeholder="Enter email" name="email" [(ngModel)]="email"
+                required email />
 
             <label class="label" for="password">Password</label>
-            <input id="password" type="password" class="input" placeholder="Enter password" />
+            <input id="password" type="password" class="input" placeholder="Enter password" name="password"
+                [(ngModel)]="password" required minlength="6" />
 
             <label class="label" for="confirm">Confirm Password</label>
-            <input id="confirm" type="password" class="input" placeholder="Confirm password" />
+            <input id="confirm" type="password" class="input" placeholder="Confirm password" name="confirmPassword"
+                [(ngModel)]="confirmPassword" required />
 
-            <button type="button" class="btn-primary">REGISTER</button>
+            <button class="btn" type="submit" [disabled]="f.invalid">
+                REGISTER
+            </button>
 
             <p class="footer-text">
                 Already have an account?
-                <a routerLink="/landing" class="link">Login</a>
+                <a routerLink="/participant-login" class="link">Login</a>
             </p>
         </form>
     </div>

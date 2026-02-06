@@ -7,7 +7,7 @@
     <nav class="nav">
         <!-- ADMIN MENU -->
         <ng-container *ngIf="role === 'admin'; else employeeMenu">
-            <a class="nav-item" routerLink="/admin-board" routerLinkActive="active"
+            <a class="nav-item" routerLink="/admin-dashboard" routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: true }">
                 <span class="nav-icon">▦</span>
                 <span>Dashboard</span>
@@ -16,6 +16,11 @@
             <a class="nav-item" routerLink="/task-management" routerLinkActive="active">
                 <span class="nav-icon">≡</span>
                 <span>Task Management</span>
+            </a>
+
+            <a class="nav-item" routerLink="/bingo-task" routerLinkActive="active">
+                <span class="nav-icon">✅</span>
+                <span>Bingo Task</span>
             </a>
 
             <a class="nav-item" [routerLink]="role === 'admin' ? '/admin/leaderboards' : '/participant/leaderboards'"

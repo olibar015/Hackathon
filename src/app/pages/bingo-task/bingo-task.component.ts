@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 
 export type TaskStatus = 'available' | 'completed' | 'bingoLine';
@@ -46,6 +46,7 @@ export class BingoTaskComponent {
     { id: 24, name: 'Deep work 2hrs', points: 60, status: 'available' },
     { id: 25, name: 'Family time', points: 45, status: 'available' },
   ];
+  isAdmin = true;
 
   get completedCount(): number {
     return this.tasks.filter(t => t.status === 'completed' || t.status === 'bingoLine').length;
@@ -53,5 +54,35 @@ export class BingoTaskComponent {
 
   get totalTasks(): number {
     return this.tasks.length;
+  }
+
+  @HostListener('document:mousemove', ['$event'])
+  onMouseMove(e: MouseEvent) {
+    const hand = document.querySelector('.hand-cursor') as HTMLElement;
+    if (!hand) return;
+
+    hand.style.left = e.clientX + 'px';
+    hand.style.top = e.clientY + 'px';
+  }
+
+  toggleTask(task: BingoTask) {
+    console.log('CLICKED TASK:', task.id, task.name, 'old:', task.status);
+
+    task.status = task.status === 'completed' ? 'available' : 'completed';
+
+    console.log('NEW STATUS:', task.status);
+  }
+
+  onCellClick(task: BingoTask) {
+    console.log('Clicked:', task.id, task.name, 'isAdmin:', this.isAdmin);
+
+    if (!this.isAdmin) {
+      // employee view: show message only
+      alert('Read-only: Admin lang pwedeng mag check.');
+      return;
+    }
+
+    // admin view: allow update
+    this.toggleTask(task);
   }
 }
