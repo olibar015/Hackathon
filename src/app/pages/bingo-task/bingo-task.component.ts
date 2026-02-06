@@ -20,7 +20,7 @@ export interface BingoTask {
 })
 export class BingoTaskComponent {
   readonly tasks: BingoTask[] = [
-    { id: 1, name: 'Complete 5 exercises', points: 50, status: 'completed' },
+    { id: 1, name: 'Complete Training (Any IT Skill)', points: 50, status: 'completed' },
     { id: 2, name: 'Read for 30 min', points: 40, status: 'available' },
     { id: 3, name: 'Meditate 10 min', points: 30, status: 'available' },
     { id: 4, name: 'Drink 8 glasses', points: 20, status: 'available' },
