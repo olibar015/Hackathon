@@ -9,7 +9,7 @@ import { SidebarComponent } from './pages/sidebar/sidebar.component';
 import { TaskManagementComponent } from './pages/task-management/task-management.component';
 import { LeaderboardsComponent } from './pages/leaderboards/leaderboards.component';
 import { BingoTaskComponent } from './pages/bingo-task/bingo-task.component';
-
+import { RedemptionStoreComponent } from './pages/redemption-store/redemption-store.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'landing', pathMatch: 'full' },
@@ -25,8 +25,10 @@ export const routes: Routes = [
   { path: 'bingo-task', component: BingoTaskComponent },
   { path: 'admin/leaderboards', component: LeaderboardsComponent },
   { path: 'participant/leaderboards', component: LeaderboardsComponent },
+  { path: 'admin/reward-store', component: RedemptionStoreComponent },
+  { path: 'participant/reward-store', component: RedemptionStoreComponent },
   { path: 'bingo-task', component: BingoTaskComponent },
-
+  { path: 'reward-store', component: RedemptionStoreComponent},
 
   { path: '**', redirectTo: 'landing' }
 ];

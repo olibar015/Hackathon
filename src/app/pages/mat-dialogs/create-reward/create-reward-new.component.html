@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Create New Reward</h2>
+
+<mat-dialog-content>
+  <form class="reward-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Reward Name</mat-label>
+      <input matInput [(ngModel)]="reward.name" name="name" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput rows="4" [(ngModel)]="reward.description" name="description" required></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Points</mat-label>
+      <input matInput type="number" min="1" [(ngModel)]="reward.points" name="points" required>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onCreate()">Create</button>
+</mat-dialog-actions>
