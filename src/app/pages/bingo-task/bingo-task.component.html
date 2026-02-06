@@ -12,53 +12,106 @@
           <div class="title-sub">Complete tasks • Earn points • Get BINGO!</div>
         </div>
 
-        <div class="bingo-balls">
-          <div class="ball b">B</div>
-          <div class="ball i">I</div>
-          <div class="ball n">N</div>
-          <div class="ball g">G</div>
-          <div class="ball o">O</div>
-        </div>
+
 
         <div class="hud">
+          <!-- Card size chooser -->
+          <div class="hud-chip" *ngIf="hasChosenSize">
+            <span class="hud-label">Card</span>
+            <div class="hud-actions">
+              <button class="hud-btn" [class.active]="gridSize === 3" (click)="setBoardSize(3)">3×3</button>
+              <button class="hud-btn" [class.active]="gridSize === 5" (click)="setBoardSize(5)">5×5</button>
+            </div>
+          </div>
+
+          <!-- Completed counter -->
           <div class="hud-chip">
             <span class="hud-label">Completed</span>
             <span class="hud-value">{{ completedCount }} / {{ totalTasks }}</span>
           </div>
+
+          <div class="hud-chip" *ngIf="hasChosenSize">
+            <button class="hud-btn" (click)="backToChoice()">Change Card</button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ✅ CHOICE SCREEN FIRST -->
+      <div class="choose-screen" *ngIf="!hasChosenSize">
+        <div class="choose-card">
+          <h1 class="choose-title">Choose your Bingo Card</h1>
+          <p class="choose-sub">Pick a card size to start playing.</p>
+
+          <div class="choose-actions">
+            <button class="choose-btn" (click)="setBoardSize(3)">
+              3×3 Daily Fun Card
+              <span class="hint">No FREE • Win: row/col/diagonal</span>
+            </button>
+
+            <button class="choose-btn gold" (click)="setBoardSize(5)">
+              5×5 Task Card
+              <span class="hint">Has FREE center • Win: row/col/diagonal</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      <section class="bingo-card arcade-panel">
+
+      <section class="bingo-card arcade-panel" #bingoCard *ngIf="hasChosenSize">
         <div class="card-header">
           <h2>BINGO Challenge</h2>
           <div class="completion-badge">{{ completedCount }} / {{ totalTasks }} Done</div>
         </div>
 
+        <div class="card-bingo-balls" *ngIf="hasChosenSize && gridSize === 3">
+          <div class="ball" *ngFor="let l of bingoBalls" [ngClass]="l.toLowerCase()">
+            {{ l }}
+          </div>
+        </div>
+
         <div class="bingo-wrapper">
-          <div class="bingo-columns">
-            <div class="bingo-column" *ngFor="let col of [0,1,2,3,4]">
-              <div class="column-letter bubble">
-                {{ ['B','I','N','G','O'][col] }}
-              </div>
+          <div class="bingo-column" *ngFor="let col of columns">
+            <div class="column-letter bubble" *ngIf="gridSize === 5">
+              {{ letters[col] }}
+            </div>
 
-              <div class="bingo-grid-column">
-                <div class="bingo-cell" *ngFor="let task of tasks.slice(col * 5, col * 5 + 5)"
-                  [class.completed]="task.status === 'completed'" [class.bingoLine]="task.status === 'bingoLine'"
-                  [class.readonly]="!isAdmin" (click)="isAdmin && onCellClick(task)">
-                  <div class="cell-gloss"></div>
+            <div class="bingo-grid-column">
+              <div class="bingo-cell" *ngFor="let task of tasks.slice(col * gridSize, col * gridSize + gridSize)"
+                [class.locked]="task.status !== 'available' || task.isFree" [class.free]="task.isFree"
+                (click)="onCellClick(task)">
 
-                  <!-- optional icons (pure CSS) -->
-                  <div class="cell-badge" *ngIf="task.status === 'bingoLine'">★</div>
-                  <div class="cell-check" *ngIf="task.status === 'completed'">✓</div>
+                <div class="card-3d" [class.is-flipped]="task.status !== 'available'">
+                  <!-- FRONT -->
+                  <div class="card-face card-front">
+                    <div class="cell-gloss"></div>
 
-                  <div class="cell-content">
-                    <div class="task-name">{{ task.name }}</div>
-                    <div class="task-points">+{{ task.points }} pts</div>
+                    <div class="cell-content">
+                      <ng-container *ngIf="!task.isFree; else freeFront">
+                        <div class="task-name">{{ task.name }}</div>
+                        <div class="task-points">+{{ task.points }} pts</div>
+                      </ng-container>
+
+                      <ng-template #freeFront>
+                        <div class="free-text">FREE</div>
+                      </ng-template>
+                    </div>
+                  </div>
+
+                  <!-- BACK -->
+                  <div class="card-face card-back" [attr.data-letter]="task.isFree ? 'FREE' : 'WIN'">
+
+                    <div class="back-letter">
+                      {{ task.isFree ? 'FREE' : 'WIN' }}
+                    </div>
                   </div>
                 </div>
+
               </div>
             </div>
           </div>
+
         </div>
 
         <div class="legend game-legend">
@@ -77,6 +130,19 @@
         </div>
       </section>
     </div>
+
+    <!-- ✅ OVERLAY (NO BACKGROUND) -->
+    <div class="celebration-overlay" *ngIf="showOverlay" aria-hidden="true">
+      <canvas #confettiCanvas class="confetti" *ngIf="overlayType === 'bingo'"></canvas>
+
+      <div class="celebration-word play" [class.blackout]="overlayType === 'blackout'" [style.left.px]="overlayPos.x"
+        [style.top.px]="overlayPos.y">
+        <span class="word" *ngIf="overlayType === 'bingo'">BINGO</span>
+        <span class="word" *ngIf="overlayType === 'blackout'">BLACKOUT</span>
+      </div>
+    </div>
+
+
     <div class="hand-cursor"></div>
   </div>
 </div>

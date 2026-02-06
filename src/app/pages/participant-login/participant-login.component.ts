@@ -41,6 +41,8 @@ export class ParticipantLoginComponent {
 
         Swal.fire({ icon: 'success', title: 'Welcome!', timer: 1200, showConfirmButton: false });
 
+        const payload = { email: this.email, password: this.password };
+        console.log('Submitting login payload:', payload);
         // ✅ go to your board
         this.router.navigateByUrl('/participant-board');
       },

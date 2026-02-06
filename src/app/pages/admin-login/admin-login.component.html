@@ -4,18 +4,18 @@
             <img src="assets/bingotask-logo.png" alt="BingoTask Logo" class="logo" />
         </div>
 
-        <!-- <form class="form" autocomplete="off" (ngSubmit)="loginAsAdmin()" #f="ngForm"> -->
-        <label class="label" for="email">Email</label>
-        <!-- <input class="input" id="email" type="email" name="email" [(ngModel)]="email" required email /> -->
+        <form class="form" autocomplete="off" (ngSubmit)="loginAsAdmin()" #f="ngForm">
+            <label class="label" for="email">Email</label>
+            <input class="input" id="email" type="email" name="email" [(ngModel)]="email" required email />
 
-        <label class="label" for="password">Password</label>
-        <!-- <input class="input" id="password" type="password" name="password" [(ngModel)]="password" required /> -->
+            <label class="label" for="password">Password</label>
+            <input class="input" id="password" type="password" name="password" [(ngModel)]="password" required />
 
-        <!-- <button class="btn" type="submit" [disabled]="f.invalid || loading">
-            {{ loading ? 'Logging in...' : 'Login' }}
-        </button> -->
+            <button class="btn" type="submit" [disabled]="f.invalid || loading">
+                {{ loading ? 'Logging in...' : 'Login' }}
+            </button>
 
-        <a routerLink="/landing" class="back">Back</a>
-        <!-- </form> -->
+            <a routerLink="/landing" class="back">Back</a>
+        </form>
     </div>
 </div>
