@@ -19,7 +19,7 @@ export const routes: Routes = [
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'registration', component: RegistrationComponent },
   { path: 'participant-board', component: ParticipantBoardComponent },
-  { path: 'admin-board', component: AdminDashboardComponent },
+  { path: 'admin-dashboard', component: AdminDashboardComponent },
   { path: 'sidebar', component: SidebarComponent },
   { path: 'task-management', component: TaskManagementComponent },
   { path: 'bingo-task', component: BingoTaskComponent },

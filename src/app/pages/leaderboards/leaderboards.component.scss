@@ -4,14 +4,32 @@
 	box-sizing: border-box;
 }
 
-.leaderboard-page {
-	min-height: 100vh;
-	background: #f7f8fc;
-	color: #0f1c2e;
-	position: relative;
-	display: flex;
+:root {
+	--ink: #eaf2ff;
+	--muted: rgba(234, 242, 255, .75);
+	--panel: rgba(10, 18, 40, .62);
+	--panel-2: rgba(10, 18, 40, .42);
+	--stroke: rgba(255, 255, 255, .12);
+
+	--neon-a: #7c3aed;
+	/* violet */
+	--neon-b: #22d3ee;
+	/* cyan */
+	--neon-c: #f97316;
+	/* orange */
+	--good: #22c55e;
+	--bad: #ef4444;
 }
 
+.leaderboard-page {
+	min-height: 100vh;
+	color: white;
+	position: relative;
+	display: flex;
+	font-family: 'Poppins', sans-serif;
+}
+
+/* ===== Sidebar behavior (same as yours) ===== */
 .sidebar-panel {
 	position: fixed;
 	top: 0;
@@ -19,18 +37,18 @@
 	height: 100vh;
 	width: 240px;
 	transform: translateX(-110%);
-	transition: transform 0.2s ease;
+	transition: transform .2s ease;
 	z-index: 30;
-	box-shadow: 0 16px 40px rgba(20, 40, 80, 0.2);
+	box-shadow: 0 16px 40px rgba(0, 0, 0, .35);
 }
 
 .page-overlay {
 	position: fixed;
 	inset: 0;
-	background: rgba(10, 20, 40, 0.4);
+	background: rgba(0, 0, 0, .45);
 	opacity: 0;
 	pointer-events: none;
-	transition: opacity 0.2s ease;
+	transition: opacity .2s ease;
 	z-index: 20;
 }
 
@@ -51,89 +69,192 @@
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
+	position: relative;
+	z-index: 1;
 }
 
-.page-header {
+/* 1) Make the card more opaque + higher contrast */
+.leaderboard-card[_ngcontent-ng-c1833382203] {
+	max-width: 980px;
+	width: 100%;
+	margin: 0 auto;
+	border-radius: 22px;
+	padding: 18px;
+	border: 1px solid var(--stroke);
+	background: linear-gradient(180deg, var(--panel), var(--panel-2));
+	box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+	position: relative;
+	overflow: hidden;
+}
+
+.leaderboard-content {
 	display: flex;
-	align-items: center;
-	gap: 14px;
-
-	h1 {
-		font-family: 'Poppins', sans-serif;
-		margin: 0;
-		font-size: 24px;
-		font-weight: 700;
-		letter-spacing: -0.2px;
-	}
-
-	p {
-		font-family: 'Poppins', sans-serif;
-		margin: 6px 0 0;
-		color: #5f6b7a;
-		font-size: 14px;
-	}
+	justify-content: center;
 }
 
-.sidebar-toggle {
-	width: 40px;
-	height: 40px;
-	border-radius: 12px;
-	border: 1px solid #e2e8f2;
-	background: #ffffff;
-	display: grid;
-	place-items: center;
-	padding: 0;
-
-	svg {
-		width: 20px;
-		height: 20px;
-		stroke: #0a67b6;
-		stroke-width: 2;
-		stroke-linecap: round;
-	}
+.leaderboard-content>* {
+	width: 100%;
 }
 
-.leaderboard-card {
-	background: #ffffff;
-	border-radius: 18px;
-	padding: 16px;
-	box-shadow: 0 12px 30px rgba(30, 50, 90, 0.08);
-	border: 1px solid #eef1f6;
-	max-width: 100%;
+/* 2) Add a dark “mat” behind the card (big difference) */
+.leaderboard-card::before {
+	/* replace scanlines with darker overlay */
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.30);
+	opacity: 1 !important;
+	pointer-events: none;
 }
 
+/* 3) If you still want scanlines, put them as ::after (light) */
+.leaderboard-card::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: repeating-linear-gradient(to bottom,
+			rgba(255, 255, 255, 0.05) 0px,
+			rgba(255, 255, 255, 0.05) 1px,
+			rgba(0, 0, 0, 0) 5px,
+			rgba(0, 0, 0, 0) 10px);
+	opacity: 0.12;
+	pointer-events: none;
+}
+
+/* make sure real content stays on top of overlays */
+.leaderboard-card>* {
+	position: relative;
+	z-index: 1;
+}
+
+
+/* ===== Header ===== */
 .card-header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-bottom: 12px;
+	gap: 14px;
+	margin-bottom: 14px;
+	position: relative;
+	z-index: 1;
 }
 
-.card-title {
-	font-family: 'Poppins', sans-serif;
-	display: inline-flex;
+.arcade-title {
+	display: flex;
 	align-items: center;
-	gap: 10px;
-	font-weight: 700;
-	color: #10203b;
+	gap: 12px;
+}
+
+.title-stack {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.title-main {
+	font-weight: 800;
+	letter-spacing: .6px;
+	text-transform: uppercase;
+	font-size: 16px;
+	line-height: 1.1;
+	text-shadow: 0 0 16px rgba(34, 211, 238, .22);
+}
+
+.title-sub {
+	font-size: 12px;
+	color: white;
 }
 
 .icon.crown {
-	width: 28px;
-	height: 28px;
-	border-radius: 8px;
-	background: #f3f6ff;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 12px;
+	display: grid;
+	place-items: center;
 
-	svg {
-		width: 18px;
-		height: 18px;
-		fill: #1d4ed8;
-	}
+	/* GOLD BACKGROUND */
+	background: radial-gradient(circle at 30% 28%,
+			#fff7c2,
+			#ffd54a 45%,
+			#c9961a 100%);
+
+	/* GOLD BORDER */
+	border: 1px solid #ffe08a;
+
+	/* GOLD GLOW */
+	box-shadow:
+		inset 0 2px 0 rgba(255, 255, 255, .8),
+		0 0 16px rgba(255, 183, 77, .65),
+		0 6px 14px rgba(0, 0, 0, .35);
 }
 
+
+.icon.crown svg {
+	width: 18px;
+	height: 18px;
+	fill: #7a4a00;
+	/* dark gold */
+	filter: drop-shadow(0 0 6px rgba(255, 215, 100, .8));
+}
+
+
+/* ===== BINGO balls ===== */
+.bingo-balls {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+.ball {
+	width: 30px;
+	height: 30px;
+	border-radius: 999px;
+	display: grid;
+	place-items: center;
+	font-weight: 800;
+	font-size: 13px;
+	border: 1px solid rgba(255, 255, 255, .14);
+	background: rgba(0, 0, 0, .18);
+	box-shadow: 0 8px 18px rgba(0, 0, 0, .25);
+	text-shadow: 0 0 10px rgba(255, 255, 255, .25);
+}
+
+/* BASE BALL */
+.ball {
+	color: #ffffff;
+	border: 1px solid rgba(255, 255, 255, .25);
+	box-shadow: none;
+	/* remove glow */
+	box-shadow: inset 0 2px 0 rgba(255, 255, 255, .35);
+}
+
+/* B – cyan */
+.ball.b {
+	background: #22d3ee;
+}
+
+/* I – violet */
+.ball.i {
+	background: #7c3aed;
+}
+
+/* N – orange */
+.ball.n {
+	background: #f97316;
+}
+
+/* G – green */
+.ball.g {
+	background: #22c55e;
+}
+
+/* O – red */
+.ball.o {
+	background: #ef4444;
+}
+
+
+/* ===== List ===== */
 .leaderboard-list {
 	list-style: none;
 	padding: 0;
@@ -141,182 +262,312 @@
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
+	position: relative;
+	z-index: 1;
 }
 
 .leaderboard-item {
 	display: grid;
-	grid-template-columns: 32px 44px 1fr auto auto;
+	grid-template-columns: 36px 46px 1fr auto auto;
 	align-items: center;
 	gap: 12px;
 	padding: 12px 14px;
+	border-radius: 16px;
+	border: 1px solid rgba(255, 255, 255, .12);
+	background: rgba(8, 14, 30, .38);
+	backdrop-filter: blur(10px);
+	transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+	position: relative;
+	overflow: hidden;
+}
+
+.leaderboard-item:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 14px 30px rgba(0, 0, 0, .28);
+	border-color: rgba(34, 211, 238, .25);
+}
+
+/* subtle moving shine */
+.leaderboard-item::before {
+	content: "";
+	position: absolute;
+	inset: -60% -40%;
+	background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .12), transparent);
+	transform: rotate(12deg);
+	opacity: 0;
+	transition: opacity .15s ease;
+}
+
+.leaderboard-item:hover::before {
+	opacity: .55;
+}
+
+/* ===== Arcade Rank Colors ===== */
+
+/* 🔘 DEFAULT = GREY (Rank 4 and below) */
+.arcade-rank {
+	background: radial-gradient(circle at 30% 28%,
+			#f3f4f6,
+			#cfd3da 1%,
+			#232429 100%);
+	color: #2a2f36;
+	border: 2px solid #e1e4ea;
+	box-shadow:
+		inset 0 2px 0 rgba(255, 255, 255, .8),
+		0 6px 14px rgba(0, 0, 0, .25);
+}
+
+/* 🥇 GOLD – Rank 1 */
+.leaderboard-item.rank-1 .arcade-rank {
+	background: radial-gradient(circle at 30% 28%,
+			#fff6bf,
+			#ffd54a 45%,
+			#c9961a 100%);
+	color: #3b2400;
+	border-color: #ffe08a;
+	box-shadow:
+		inset 0 2px 0 rgba(255, 255, 255, .9),
+		0 0 18px rgba(249, 115, 22, .55),
+		0 10px 22px rgba(0, 0, 0, .35);
+}
+
+/* 🥈 SILVER – Rank 2 */
+.leaderboard-item.rank-2 .arcade-rank {
+	background: radial-gradient(circle at 30% 28%,
+			#f8fbff,
+			#d9e2f1 45%,
+			#9aa9c3 100%);
+	color: #1f2a44;
+	border-color: #eef3ff;
+	box-shadow:
+		inset 0 2px 0 rgba(255, 255, 255, .9),
+		0 0 14px rgba(180, 200, 255, .45),
+		0 8px 18px rgba(0, 0, 0, .3);
+}
+
+/* 🥉 BRONZE – Rank 3 */
+.leaderboard-item.rank-3 .arcade-rank {
+	background: radial-gradient(circle at 30% 28%,
+			#ffd9b3,
+			#e39a55 45%,
+			#9c5a1e 100%);
+	color: #3a1f00;
+	border-color: #f3b37a;
+	box-shadow:
+		inset 0 2px 0 rgba(255, 255, 255, .8),
+		0 0 14px rgba(249, 115, 22, .45),
+		0 8px 18px rgba(0, 0, 0, .3);
+}
+
+
+.arcade-avatar {
+	width: 46px;
+	height: 46px;
 	border-radius: 14px;
-	border: 1px solid #eef1f6;
-	background: #ffffff;
-	transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-	&:hover {
-		transform: translateY(-1px);
-		box-shadow: 0 6px 16px rgba(28, 61, 122, 0.08);
-	}
-
-	&.top {
-		background: #f4f7ff;
-		border-color: #dbe6ff;
-	}
-
-	&.is-you {
-		background: #0b5cc2;
-		color: #ffffff;
-		border-color: transparent;
-
-		.sub,
-		.label {
-			color: rgba(255, 255, 255, 0.8);
-		}
-
-		.avatar {
-			background: rgba(255, 255, 255, 0.2);
-			color: #ffffff;
-		}
-
-		.rank {
-			background: rgba(255, 255, 255, 0.2);
-			color: #ffffff;
-		}
-
-		.badge {
-			background: rgba(255, 255, 255, 0.2);
-			color: #ffffff;
-		}
-	}
-}
-
-.rank {
-	font-family: 'Poppins', sans-serif;
-	width: 32px;
-	height: 32px;
-	border-radius: 50%;
-	background: #f0f3f9;
+	/* arcade tile instead of circle */
 	display: grid;
 	place-items: center;
-	font-weight: 700;
-	font-size: 14px;
-	color: #2b3a55;
+	font-weight: 800;
+	background: rgba(34, 211, 238, .12);
+	border: 1px solid rgba(34, 211, 238, .18);
+	box-shadow: 0 0 18px rgba(34, 211, 238, .12);
 }
 
-.avatar {
-	font-family: 'Poppins', sans-serif;
-	width: 44px;
-	height: 44px;
-	border-radius: 50%;
-	background: #e7eef9;
-	color: #1f4aa6;
-	display: grid;
-	place-items: center;
-	font-weight: 700;
-	font-size: 14px;
-}
-
-.meta {
+.arcade-meta {
 	display: flex;
 	flex-direction: column;
 	gap: 4px;
 }
 
-.name {
-	font-family: 'Poppins', sans-serif;
-	font-weight: 700;
+.arcade-name {
 	display: flex;
 	align-items: center;
 	gap: 8px;
+	font-weight: 800;
 }
 
-.sub {
-	font-family: 'Poppins', sans-serif;
+.arcade-sub {
 	font-size: 12px;
-	color: #5d6a7a;
+	color: var(--muted);
 }
 
-.badge {
-	font-family: 'Poppins', sans-serif;
-	background: #f4f7ff;
-	color: #0b5cc2;
-	font-size: 11px;
-	padding: 2px 6px;
-	border-radius: 999px;
-	font-weight: 600;
-}
-
-.score {
+.arcade-score {
 	text-align: right;
 	display: flex;
 	flex-direction: column;
 	gap: 2px;
+	min-width: 74px;
 }
 
-.points {
-	font-family: 'Poppins', sans-serif;
-	font-weight: 700;
-	font-size: 14px;
+.arcade-points {
+	font-weight: 900;
+	letter-spacing: .3px;
+	text-shadow: 0 0 14px rgba(34, 211, 238, .18);
 }
 
-.label {
-	font-family: 'Poppins', sans-serif;
+.arcade-label {
 	font-size: 11px;
-	color: #6f7c8c;
+	color: rgba(234, 242, 255, .65);
+	letter-spacing: .8px;
 }
 
+/* ===== Chips / badges ===== */
+.arcade-badge {
+	font-size: 11px;
+	padding: 3px 8px;
+	border-radius: 999px;
+	font-weight: 800;
+	letter-spacing: .6px;
+	background: rgba(34, 211, 238, .16);
+	border: 1px solid rgba(34, 211, 238, .28);
+	color: var(--ink);
+}
+
+.chip {
+	font-size: 10px;
+	padding: 3px 8px;
+	border-radius: 999px;
+	font-weight: 900;
+	letter-spacing: .7px;
+	border: 1px solid rgba(255, 255, 255, .14);
+	background: rgba(0, 0, 0, .18);
+	color: rgba(234, 242, 255, .9);
+}
+
+.chip-gold {
+	box-shadow: 0 0 14px rgba(249, 115, 22, .25);
+}
+
+.chip-silver {
+	box-shadow: 0 0 14px rgba(34, 211, 238, .18);
+}
+
+.chip-bronze {
+	box-shadow: 0 0 14px rgba(124, 58, 237, .18);
+}
+
+/* ===== Podium top 3 glow ===== */
+.leaderboard-item.podium {
+	border-color: rgba(255, 255, 255, .16);
+}
+
+.leaderboard-item.rank-1 {
+	background: linear-gradient(90deg, rgba(249, 115, 22, .18), rgba(8, 14, 30, .38));
+	box-shadow: 0 0 26px rgba(249, 115, 22, .14);
+}
+
+.leaderboard-item.rank-2 {
+	background: linear-gradient(90deg, rgba(34, 211, 238, .16), rgba(8, 14, 30, .38));
+	box-shadow: 0 0 22px rgba(34, 211, 238, .12);
+}
+
+.leaderboard-item.rank-3 {
+	background: linear-gradient(90deg, rgba(124, 58, 237, .16), rgba(8, 14, 30, .38));
+	box-shadow: 0 0 22px rgba(124, 58, 237, .12);
+}
+
+/* ===== YOU row (power-up) ===== */
+.leaderboard-item.is-you {
+	background: linear-gradient(90deg, rgba(34, 197, 94, .18), rgba(8, 14, 30, .42));
+	border-color: rgba(34, 197, 94, .35);
+	box-shadow: 0 0 26px rgba(34, 197, 94, .14);
+}
+
+.leaderboard-item.is-you .arcade-sub,
+.leaderboard-item.is-you .arcade-label {
+	color: rgba(234, 242, 255, .78);
+}
+
+.leaderboard-item.is-you .arcade-avatar {
+	background: rgba(34, 197, 94, .18);
+	border-color: rgba(34, 197, 94, .35);
+	box-shadow: 0 0 18px rgba(34, 197, 94, .18);
+}
+
+/* ===== Trend ===== */
 .trend {
-	font-family: 'Poppins', sans-serif;
 	display: inline-flex;
 	align-items: center;
-	gap: 4px;
-	font-weight: 600;
+	gap: 6px;
+	font-weight: 800;
 	font-size: 12px;
+	min-width: 62px;
+	justify-content: flex-end;
 
 	svg {
 		width: 18px;
 		height: 18px;
 		fill: none;
-		stroke-width: 2.2;
+		stroke-width: 2.3;
 		stroke-linecap: round;
 		stroke-linejoin: round;
-	}
-
-	&.up {
-		color: #16a34a;
-
-		svg {
-			stroke: #16a34a;
-		}
-	}
-
-	&.down {
-		color: #dc2626;
-
-		svg {
-			stroke: #dc2626;
-		}
-	}
-
-	&.neutral {
-		color: #9aa3af;
+		filter: drop-shadow(0 0 10px rgba(255, 255, 255, .08));
 	}
 }
 
+.trend.up {
+	color: var(--good);
+}
+
+.trend.up svg {
+	stroke: var(--good);
+}
+
+.trend.down {
+	color: var(--bad);
+}
+
+.trend.down svg {
+	stroke: var(--bad);
+}
+
+.trend.neutral {
+	color: rgba(234, 242, 255, .55);
+}
+
+.trend.neutral svg {
+	stroke: rgba(234, 242, 255, .35);
+}
+
+.trend-val {
+	font-variant-numeric: tabular-nums;
+}
+
+/* ===== Background ===== */
+.game-bg {
+	background: url('/assets/bingo-bg.jpg') center / cover no-repeat;
+}
+
+.game-bg::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	background:
+		radial-gradient(circle at 20% 10%, rgba(34, 211, 238, .18), transparent 40%),
+		radial-gradient(circle at 85% 25%, rgba(124, 58, 237, .18), transparent 45%),
+		radial-gradient(circle at 50% 95%, rgba(249, 115, 22, .14), transparent 40%),
+		rgba(0, 0, 0, .35);
+	pointer-events: none;
+}
+
+/* ===== Responsive ===== */
 @media (min-width: 640px) {
 	.leaderboard-content {
 		padding: 32px 24px 48px;
 	}
 
 	.leaderboard-card {
-		padding: 20px 24px;
+		padding: 22px 24px;
+	}
+
+	.title-main {
+		font-size: 18px;
 	}
 }
 
 @media (min-width: 960px) {
 	.leaderboard-item {
-		grid-template-columns: 36px 48px 1fr auto auto;
+		grid-template-columns: 40px 50px 1fr auto auto;
 	}
 }
 
@@ -334,14 +585,6 @@
 	}
 
 	.page-overlay {
-		display: none;
-	}
-
-	.leaderboard-content {
-		padding: 32px 32px 48px;
-	}
-
-	.sidebar-toggle {
 		display: none;
 	}
 }

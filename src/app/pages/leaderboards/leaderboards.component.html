@@ -1,39 +1,58 @@
-<div class="leaderboard-page" [class.sidebar-open]="isSidebarOpen">
+<div class="leaderboard-page game-bg" [class.sidebar-open]="isSidebarOpen">
     <app-sidebar class="sidebar-panel" role="admin" displayName="User"></app-sidebar>
     <div class="page-overlay" (click)="closeSidebar()"></div>
 
     <main class="leaderboard-content">
-        <section class="leaderboard-card" aria-label="Leaderboard">
-            <div class="card-header">
-                <div class="card-title">
-                    <span class="icon crown" aria-hidden="true">
+        <section class="leaderboard-card arcade-card" aria-label="Leaderboard">
+            <div class="card-header arcade-header">
+                <div class="card-title arcade-title">
+                    <span class="icon crown arcade-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" role="img" focusable="false">
                             <path d="M3 7l4 3 5-6 5 6 4-3v11H3V7z" />
                         </svg>
                     </span>
-                    <span>Leaderboard</span>
+
+                    <div class="title-stack">
+                        <span class="title-main">BINGO ARCADE LEADERBOARD</span>
+                        <span class="title-sub">Top players • streaks • points</span>
+                    </div>
+                </div>
+
+                <div class="bingo-balls" aria-hidden="true">
+                    <span class="ball b">B</span>
+                    <span class="ball i">I</span>
+                    <span class="ball n">N</span>
+                    <span class="ball g">G</span>
+                    <span class="ball o">O</span>
                 </div>
             </div>
 
-            <ul class="leaderboard-list">
-                <li class="leaderboard-item"
-                    *ngFor="let item of leaderboard"
-                    [class.top]="item.rank === 1"
-                    [class.is-you]="item.isYou">
-                    <div class="rank">{{ item.rank }}</div>
-                    <div class="avatar">{{ item.initials }}</div>
-                    <div class="meta">
-                        <div class="name">
+            <ul class="leaderboard-list arcade-list">
+                <li class="leaderboard-item arcade-item" *ngFor="let item of leaderboard" [class.top]="item.rank === 1"
+                    [class.podium]="item.rank <= 3" [class.rank-1]="item.rank === 1" [class.rank-2]="item.rank === 2"
+                    [class.rank-3]="item.rank === 3" [class.is-you]="item.isYou">
+
+                    <div class="rank arcade-rank">{{ item.rank }}</div>
+
+                    <div class="avatar arcade-avatar">{{ item.initials }}</div>
+
+                    <div class="meta arcade-meta">
+                        <div class="name arcade-name">
                             {{ item.name }}
-                            <span *ngIf="item.isYou" class="badge">You</span>
+                            <span *ngIf="item.isYou" class="badge arcade-badge">YOU</span>
+                            <span *ngIf="item.rank === 1" class="chip chip-gold">JACKPOT</span>
+                            <span *ngIf="item.rank === 2" class="chip chip-silver">RUNNER-UP</span>
+                            <span *ngIf="item.rank === 3" class="chip chip-bronze">TOP 3</span>
                         </div>
-                        <div class="sub">Level {{ item.level }} • {{ item.streakDays }} day streak</div>
+                        <div class="sub arcade-sub">Level {{ item.level }} • {{ item.streakDays }} day streak</div>
                     </div>
-                    <div class="score">
-                        <div class="points">{{ item.points | number }}</div>
-                        <div class="label">points</div>
+
+                    <div class="score arcade-score">
+                        <div class="points arcade-points">{{ item.points | number }}</div>
+                        <div class="label arcade-label">PTS</div>
                     </div>
-                    <div class="trend" [ngClass]="item.trend" [attr.aria-label]="item.trend">
+
+                    <div class="trend arcade-trend" [ngClass]="item.trend" [attr.aria-label]="item.trend">
                         <ng-container [ngSwitch]="item.trend">
                             <svg *ngSwitchCase="'up'" viewBox="0 0 24 24" role="img" focusable="false">
                                 <path d="M5 15l6-6 4 4 4-4" />
@@ -42,8 +61,9 @@
                                 <path d="M5 9l6 6 4-4 4 4" />
                             </svg>
                         </ng-container>
-                        <span>{{ item.trend === 'neutral' ? '–' : item.trendValue }}</span>
+                        <span class="trend-val">{{ item.trend === 'neutral' ? '–' : item.trendValue }}</span>
                     </div>
+
                 </li>
             </ul>
         </section>

@@ -3,29 +3,57 @@
   <app-sidebar></app-sidebar>
 
   <!-- MAIN CONTENT -->
-  <div class="dashboard-content">
+  <div class="dashboard-content game-bg">
     <div class="bingo-container">
-      <header class="bingo-header">
-        <h1>Task BINGO Challenge</h1>
-        <p>Complete tasks to earn points and unlock BINGO lines for bonus rewards!</p>
-      </header>
+      <!-- GAME TOP BAR -->
+      <div class="game-topbar">
+        <div class="game-title">
+          <div class="title-main">TASK BINGO</div>
+          <div class="title-sub">Complete tasks • Earn points • Get BINGO!</div>
+        </div>
 
-      <section class="bingo-card">
+        <div class="bingo-balls">
+          <div class="ball b">B</div>
+          <div class="ball i">I</div>
+          <div class="ball n">N</div>
+          <div class="ball g">G</div>
+          <div class="ball o">O</div>
+        </div>
+
+        <div class="hud">
+          <div class="hud-chip">
+            <span class="hud-label">Completed</span>
+            <span class="hud-value">{{ completedCount }} / {{ totalTasks }}</span>
+          </div>
+        </div>
+      </div>
+
+      <section class="bingo-card arcade-panel">
         <div class="card-header">
           <h2>BINGO Challenge</h2>
-          <div class="completion-badge">{{ completedCount }} / {{ totalTasks }} Completed</div>
+          <div class="completion-badge">{{ completedCount }} / {{ totalTasks }} Done</div>
         </div>
 
         <div class="bingo-wrapper">
           <div class="bingo-columns">
             <div class="bingo-column" *ngFor="let col of [0,1,2,3,4]">
-              <div class="column-letter">{{ ['B','I','N','G','O'][col] }}</div>
+              <div class="column-letter bubble">
+                {{ ['B','I','N','G','O'][col] }}
+              </div>
+
               <div class="bingo-grid-column">
                 <div class="bingo-cell" *ngFor="let task of tasks.slice(col * 5, col * 5 + 5)"
-                  [class.completed]="task.status === 'completed'" [class.bingoLine]="task.status === 'bingoLine'">
+                  [class.completed]="task.status === 'completed'" [class.bingoLine]="task.status === 'bingoLine'"
+                  [class.readonly]="!isAdmin" (click)="isAdmin && onCellClick(task)">
+                  <div class="cell-gloss"></div>
+
+                  <!-- optional icons (pure CSS) -->
+                  <div class="cell-badge" *ngIf="task.status === 'bingoLine'">★</div>
+                  <div class="cell-check" *ngIf="task.status === 'completed'">✓</div>
+
                   <div class="cell-content">
                     <div class="task-name">{{ task.name }}</div>
-                    <div class="task-points">+{{ task.points }}pts</div>
+                    <div class="task-points">+{{ task.points }} pts</div>
                   </div>
                 </div>
               </div>
@@ -33,10 +61,10 @@
           </div>
         </div>
 
-        <div class="legend">
+        <div class="legend game-legend">
           <div class="legend-item">
             <span class="legend-box bingoLine"></span>
-            <span>BINGO Line (x2 bonus)</span>
+            <span>BINGO Line (Bonus)</span>
           </div>
           <div class="legend-item">
             <span class="legend-box completed"></span>
@@ -49,5 +77,6 @@
         </div>
       </section>
     </div>
+    <div class="hand-cursor"></div>
   </div>
 </div>
