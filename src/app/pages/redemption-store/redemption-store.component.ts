@@ -34,7 +34,7 @@ export class RedemptionStoreComponent implements OnInit {
   showCreateModal = false;
   editingReward: Reward | null = null;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
     // Get role from localStorage, same way as sidebar
@@ -141,7 +141,7 @@ export class RedemptionStoreComponent implements OnInit {
 
   redeemReward(reward: Reward): void {
     if (this.currentPoints >= reward.points) {
-      this.currentPoints -= reward.points;
+      this.currentPoints += reward.points;
       alert(`Successfully redeemed ${reward.name}!`);
     } else {
       alert('Insufficient points');
@@ -212,4 +212,5 @@ export class RedemptionStoreComponent implements OnInit {
   closeModal(): void {
     this.showCreateModal = false;
     this.editingReward = null;
-  }}
+  }
+}

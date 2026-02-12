@@ -1,8 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, HostListener, ViewChild, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 
-export type TaskStatus = 'available' | 'completed' | 'bingoLine';
+export type TaskStatus = 'available' | 'pending' | 'verified' | 'bingoLine';
+
+type OverlayType = 'bingo' | 'blackout';
+
+type ProofType = 'image' | 'file';
+export interface TaskProof {
+  type: ProofType;
+  name: string;
+  url: string;     // blob URL for preview OR remote URL
+  file?: File;     // used during upload
+}
 
 export interface BingoTask {
   id: number;
@@ -10,9 +21,11 @@ export interface BingoTask {
   points: number;
   status: TaskStatus;
   isFree?: boolean;
-}
 
-type OverlayType = 'bingo' | 'blackout';
+  // NEW (for submit/verification flow)
+  completedAt?: string; // display string (e.g. "Feb 8, 2026")
+  proofs?: TaskProof[]; // multiple files/images
+}
 
 interface BingoCardTemplate {
   id: string;
@@ -24,7 +37,7 @@ interface BingoCardTemplate {
 @Component({
   selector: 'app-bingo-task',
   standalone: true,
-  imports: [CommonModule, SidebarComponent],
+  imports: [CommonModule, SidebarComponent, FormsModule],
   templateUrl: './bingo-task.component.html',
   styleUrls: ['./bingo-task.component.scss'],
 })
@@ -37,13 +50,9 @@ export class BingoTaskComponent implements OnInit {
   readonly bingoBalls = ['B', 'I', 'N', 'G', 'O'];
 
   // ✅ ROLE (use localStorage like your other components)
-  // Change these values if your backend stores USER/ADMIN etc.
   role: 'admin' | 'employee' = 'employee';
 
-  // ✅ IMPORTANT:
-  // If you want ONLY admin to click tasks, set:
-  // get canPlay(): boolean { return this.role === 'admin'; }
-  // If you want employees to play (recommended for your request), keep this:
+  // ✅ Employees can play
   get canPlay(): boolean { return this.role === 'employee'; }
 
   get isEmployee(): boolean { return this.role === 'employee'; }
@@ -53,8 +62,9 @@ export class BingoTaskComponent implements OnInit {
   // DATA SOURCES
   // ======================
 
-  // ✅ your original 5x5 data stays “saved”
-  private readonly tasks5x5Source: BingoTask[] = [
+  // NOTE: These sources used to have status 'completed'.
+  // We keep them but normalize to 'verified' when building the board.
+  private readonly tasks5x5Source: Array<Omit<BingoTask, 'status'> & { status: 'completed' | 'available' }> = [
     { id: 1, name: 'Complete Training (Any IT Skill)', points: 50, status: 'completed' },
     { id: 2, name: 'Acquire Training Certificate', points: 100, status: 'available' },
     { id: 3, name: 'No Absences for the Whole Month', points: 200, status: 'available' },
@@ -86,8 +96,7 @@ export class BingoTaskComponent implements OnInit {
     { id: 25, name: 'FREE', points: 0, status: 'available' },
   ];
 
-  // ✅ Your original 3x3 set becomes Card #1
-  private readonly tasks3x3Source: BingoTask[] = [
+  private readonly tasks3x3Source: Array<Omit<BingoTask, 'status'> & { status: 'completed' | 'available' }> = [
     { id: 1, name: 'React ❤️ to Milli’s greeting picture in One Exakt GC', points: 5, status: 'available' },
     { id: 2, name: 'FREE', points: 0, status: 'available' },
     { id: 3, name: 'Greet Milli in OneExakt GC', points: 5, status: 'available' },
@@ -100,13 +109,12 @@ export class BingoTaskComponent implements OnInit {
     { id: 9, name: 'Picture with Milli', points: 10, status: 'available' },
   ];
 
-  // ✅ MULTI-CARD: 3x3 templates (daily fun task sets)
   readonly dailyCards3x3: BingoCardTemplate[] = [
     {
       id: 'daily-1',
       title: 'Daily Fun Card #1',
       subtitle: 'Milli’s Day Set',
-      tasks: this.tasks3x3Source,
+      tasks: this.tasks3x3Source.map(t => this.normalizeIncomingTask(t)),
     },
     {
       id: 'daily-2',
@@ -162,11 +170,36 @@ export class BingoTaskComponent implements OnInit {
   private sfxEnabled = true;
   private audioUnlocked = false;
 
-  // ✅ this is what the UI uses (either 5x5 or selected 3x3)
+  // ✅ UI board
   tasks: BingoTask[] = [];
 
   @ViewChild('bingoCard', { static: false }) bingoCard?: ElementRef<HTMLElement>;
   @ViewChild('confettiCanvas') confettiCanvas?: ElementRef<HTMLCanvasElement>;
+
+  // ======================
+  // TASK SUBMIT DIALOG (NEW)
+  // ======================
+
+  showTaskDialog = false;
+  activeTask: BingoTask | null = null;
+
+  completionDateISO = new Date().toISOString().slice(0, 10);
+
+  selectedFiles: File[] = [];
+  filePreviews: TaskProof[] = [];
+
+  // ======================
+  // WIN TOAST (NEW)
+  // ======================
+
+  showWinToast = false;
+  winToastText = '';
+
+  private showWin(points: number) {
+    this.winToastText = `You win +${points} pts!`;
+    this.showWinToast = true;
+    setTimeout(() => (this.showWinToast = false), 2200);
+  }
 
   ngOnInit(): void {
     const r = (localStorage.getItem('role') || 'employee').toLowerCase();
@@ -187,8 +220,9 @@ export class BingoTaskComponent implements OnInit {
     return Array.from({ length: this.gridSize }, (_, i) => i);
   }
 
+  // ✅ ONLY verified/bingoLine count as done (pending does NOT count)
   get completedCount(): number {
-    return this.tasks.filter(t => t.status === 'completed' || t.status === 'bingoLine').length;
+    return this.tasks.filter(t => t.isFree || t.status === 'verified' || t.status === 'bingoLine').length;
   }
 
   get totalTasks(): number {
@@ -199,13 +233,11 @@ export class BingoTaskComponent implements OnInit {
   // BOARD SETUP
   // ======================
 
-  // ✅ called by UI when user chooses 3x3 from choice screen
   start3x3(): void {
     this.gridSize = 3;
     this.showCardPicker = true;
   }
 
-  // ✅ employee selects which 3x3 card to play
   choose3x3Card(cardId: string): void {
     this.selectedCardId = cardId;
     this.showCardPicker = false;
@@ -217,9 +249,7 @@ export class BingoTaskComponent implements OnInit {
     this.loadSelected3x3Card();
   }
 
-  // ✅ user action (HUD switch)
   setBoardSize(size: 3 | 5): void {
-    // employee + 3x3 -> open picker instead of loading a single static 3x3
     if (size === 3 && this.isEmployee) {
       this.start3x3();
       return;
@@ -242,18 +272,33 @@ export class BingoTaskComponent implements OnInit {
     this.stopConfetti();
   }
 
+  private normalizeIncomingTask(t: any): BingoTask {
+    // convert legacy 'completed' into new 'verified'
+    const status: TaskStatus =
+      t.status === 'completed' ? 'verified'
+        : (t.status as TaskStatus) ?? 'available';
+
+    return {
+      id: t.id,
+      name: t.name,
+      points: t.points,
+      status,
+      isFree: false,
+      completedAt: t.completedAt,
+      proofs: t.proofs,
+    };
+  }
+
   private build5x5(): BingoTask[] {
     return this.tasks5x5Source.map(t => ({
-      ...t,
-      status: t.status ?? 'available',
+      ...this.normalizeIncomingTask(t),
       isFree: false,
     }));
   }
 
-  // ✅ fallback if you ever want a static 3x3 (not used for employee)
   private build3x3Static(): BingoTask[] {
     return this.tasks3x3Source.map(t => ({
-      ...t,
+      ...this.normalizeIncomingTask(t),
       isFree: false,
     }));
   }
@@ -266,9 +311,11 @@ export class BingoTaskComponent implements OnInit {
       this.tasks = this.cloneTasks(saved);
     } else {
       const tpl = this.dailyCards3x3.find(c => c.id === this.selectedCardId);
-      this.tasks = this.cloneTasks(tpl?.tasks ?? []);
-      // normalize: no FREE behavior on 3x3, but keep your "FREE" text if you want
+      this.tasks = this.cloneTasks((tpl?.tasks ?? []).map(t => this.normalizeIncomingTask(t)));
+
+      // for 3x3, keep your "FREE" text but treat as normal unless you want it special
       this.tasks.forEach(t => (t.isFree = false));
+
       this.cardState.set(this.selectedCardId, this.cloneTasks(this.tasks));
     }
 
@@ -281,7 +328,10 @@ export class BingoTaskComponent implements OnInit {
   }
 
   private cloneTasks(list: BingoTask[]): BingoTask[] {
-    return list.map(t => ({ ...t }));
+    return list.map(t => ({
+      ...t,
+      proofs: t.proofs ? t.proofs.map(p => ({ ...p })) : undefined,
+    }));
   }
 
   // ======================
@@ -338,11 +388,76 @@ export class BingoTaskComponent implements OnInit {
   }
 
   // ======================
-  // click handling
+  // TASK DIALOG (NEW)
+  // ======================
+
+  openTaskDialog(task: BingoTask) {
+    this.activeTask = task;
+    this.completionDateISO = new Date().toISOString().slice(0, 10);
+    this.selectedFiles = [];
+    this.filePreviews = [];
+    this.showTaskDialog = true;
+  }
+
+  closeTaskDialog() {
+    // cleanup blob URLs
+    for (const p of this.filePreviews) {
+      if (p.url?.startsWith('blob:')) URL.revokeObjectURL(p.url);
+    }
+    this.showTaskDialog = false;
+    this.activeTask = null;
+    this.selectedFiles = [];
+    this.filePreviews = [];
+  }
+
+  onProofFilesSelected(ev: Event) {
+    const input = ev.target as HTMLInputElement;
+    const files = Array.from(input.files ?? []);
+    this.selectedFiles = files;
+
+    // cleanup old previews
+    for (const p of this.filePreviews) {
+      if (p.url?.startsWith('blob:')) URL.revokeObjectURL(p.url);
+    }
+
+    this.filePreviews = files.map(f => {
+      const isImg = f.type?.startsWith('image/');
+      return {
+        type: isImg ? 'image' : 'file',
+        name: f.name,
+        url: URL.createObjectURL(f),
+        file: f,
+      };
+    });
+  }
+
+  submitTaskProof() {
+    if (!this.activeTask) return;
+
+    // ✅ REQUIRE AT LEAST 1 FILE
+    if (this.filePreviews.length === 0) {
+      alert('Please upload at least one proof before submitting.');
+      return;
+    }
+
+    const t = this.activeTask;
+
+    const niceDate = new Date(this.completionDateISO).toLocaleDateString();
+    t.completedAt = niceDate;
+    t.proofs = [...this.filePreviews];
+
+    t.status = 'pending';
+
+    this.saveCurrentCardState();
+    this.closeTaskDialog();
+  }
+
+
+  // ======================
+  // click handling (UPDATED)
   // ======================
 
   onCellClick(task: BingoTask) {
-    // ✅ now controlled by role
     if (!this.canPlay) return;
 
     if (!this.audioUnlocked) {
@@ -353,23 +468,58 @@ export class BingoTaskComponent implements OnInit {
     if (task.isFree) return;
     if (task.status !== 'available') return;
 
-    task.status = 'completed';
-
-    // ✅ persist card progress if 3x3 multi-card
-    this.saveCurrentCardState();
-
-    this.evaluateBoard();
+    // NEW: open dialog instead of instant win
+    this.openTaskDialog(task);
   }
 
   // ======================
-  // ✅ WIN LOGIC (works for 3x3 and 5x5)
-  // diagonal, horizontal, vertical
+  // VERIFY/REJECT (CALL THESE FROM API UPDATES)
   // ======================
+
+  // Call when backend confirms this task is VERIFIED
+  markTaskVerified(taskId: number) {
+    const t = this.tasks.find(x => x.id === taskId);
+    if (!t) return;
+
+    if (t.status === 'pending') {
+      t.status = 'verified';
+
+      // toast message: You win +X pts
+      this.showWin(t.points);
+
+      // now it can count for bingo lines/blackout
+      this.evaluateBoard();
+      this.saveCurrentCardState();
+    }
+  }
+
+  // Optional: when admin rejects, return to available
+  markTaskRejected(taskId: number) {
+    const t = this.tasks.find(x => x.id === taskId);
+    if (!t) return;
+
+    if (t.status === 'pending') {
+      t.status = 'available';
+      t.completedAt = undefined;
+      t.proofs = undefined;
+      this.saveCurrentCardState();
+    }
+  }
+
+  // ======================
+  // ✅ WIN LOGIC (UPDATED)
+  // Only VERIFIED/BINGOLINE/FREE count (PENDING does NOT)
+  // ======================
+
+  private isMarked(t: BingoTask | undefined): boolean {
+    if (!t) return false;
+    return !!t.isFree || t.status === 'verified' || t.status === 'bingoLine';
+  }
 
   private evaluateBoard(): void {
     if (this.tasks.length === 0) return;
 
-    const allMarked = this.tasks.every(t => t.status !== 'available');
+    const allMarked = this.tasks.every(t => this.isMarked(t));
     if (allMarked) {
       this.showCelebration('blackout');
       return;
@@ -379,12 +529,15 @@ export class BingoTaskComponent implements OnInit {
     let newLineFound = false;
 
     for (const line of lines) {
-      const complete = line.indices.every(i => this.tasks[i]?.status !== 'available');
+      const complete = line.indices.every(i => this.isMarked(this.tasks[i]));
       if (!complete) continue;
 
+      // upgrade all in the line to bingoLine (except FREE)
       for (const i of line.indices) {
-        if (!this.tasks[i]) continue;
-        this.tasks[i].status = 'bingoLine';
+        const cell = this.tasks[i];
+        if (!cell) continue;
+        if (cell.isFree) continue;
+        cell.status = 'bingoLine';
       }
 
       if (!this.awardedLines.has(line.key)) {
@@ -395,7 +548,7 @@ export class BingoTaskComponent implements OnInit {
 
     if (newLineFound) this.showCelebration('bingo');
 
-    // ✅ also save state after evaluation because statuses can become bingoLine
+    // save state after evaluation (bingoLine may be applied)
     this.saveCurrentCardState();
   }
 
@@ -408,7 +561,7 @@ export class BingoTaskComponent implements OnInit {
     const n = this.gridSize;
     const lines: { key: string; indices: number[] }[] = [];
 
-    // rows (horizontal)
+    // rows
     for (let r = 0; r < n; r++) {
       lines.push({
         key: `R${r}`,
@@ -416,7 +569,7 @@ export class BingoTaskComponent implements OnInit {
       });
     }
 
-    // cols (vertical)
+    // cols
     for (let c = 0; c < n; c++) {
       lines.push({
         key: `C${c}`,
@@ -590,7 +743,7 @@ export class BingoTaskComponent implements OnInit {
     if (!centerTask) return;
 
     centerTask.isFree = true;
-    centerTask.status = 'completed';
+    centerTask.status = 'verified'; // counts for lines
     centerTask.name = 'FREE';
     centerTask.points = 0;
   }
@@ -602,7 +755,6 @@ export class BingoTaskComponent implements OnInit {
     this.showOverlay = false;
     this.stopConfetti();
 
-    // optional: close picker
     this.showCardPicker = false;
     this.selectedCardId = null;
   }

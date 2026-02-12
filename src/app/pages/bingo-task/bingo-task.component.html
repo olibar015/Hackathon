@@ -18,13 +18,12 @@
           <div class="hud-chip" *ngIf="hasChosenSize">
             <span class="hud-label">Card</span>
             <div class="hud-actions">
-              <!-- ✅ Employee: 3×3 opens picker (TS handles this inside setBoardSize) -->
               <button class="hud-btn" [class.active]="gridSize === 3" (click)="setBoardSize(3)">3×3</button>
               <button class="hud-btn" [class.active]="gridSize === 5" (click)="setBoardSize(5)">5×5</button>
             </div>
           </div>
 
-          <!-- Completed counter -->
+          <!-- Completed counter (counts VERIFIED + BINGOLINE + FREE only) -->
           <div class="hud-chip">
             <span class="hud-label">Completed</span>
             <span class="hud-value">{{ completedCount }} / {{ totalTasks }}</span>
@@ -50,7 +49,6 @@
 
           <div class="picker-grid">
             <button class="picker-card" *ngFor="let card of dailyCards3x3" (click)="choose3x3Card(card.id)">
-
               <div class="picker-title">{{ card.title }}</div>
               <div class="picker-sub" *ngIf="card.subtitle">{{ card.subtitle }}</div>
 
@@ -72,7 +70,6 @@
           <p class="choose-sub">Pick a card size to start playing.</p>
 
           <div class="choose-actions">
-            <!-- ✅ Employee selects 3×3 -> opens picker -->
             <button class="choose-btn" (click)="start3x3()">
               3×3 Daily Fun Card
               <span class="hint">Pick from multiple 3×3 sets • Win: row/col/diagonal</span>
@@ -95,7 +92,7 @@
 
         <!-- ✅ balls for 3×3 -->
         <div class="card-bingo-balls" *ngIf="hasChosenSize && gridSize === 3">
-          <div class="ball" *ngFor="let l of ['B','I','N']" [ngClass]="l.toLowerCase()">
+          <div class="ball" *ngFor="let l of ['B','I','N','G','O']" [ngClass]="l.toLowerCase()">
             {{ l }}
           </div>
         </div>
@@ -110,8 +107,8 @@
               <div class="bingo-cell" *ngFor="let task of tasks.slice(col * gridSize, col * gridSize + gridSize)"
                 [class.locked]="task.status !== 'available' || task.isFree" [class.free]="task.isFree"
                 (click)="onCellClick(task)">
-
-                <div class="card-3d" [class.is-flipped]="task.status !== 'available'">
+                <!-- ✅ Flip: anything not available flips (pending/verified/bingoLine/free) -->
+                <div class="card-3d" [class.is-flipped]="task.status !== 'available' || task.isFree">
                   <!-- FRONT -->
                   <div class="card-face card-front">
                     <div class="cell-gloss"></div>
@@ -128,10 +125,18 @@
                     </div>
                   </div>
 
-                  <!-- BACK -->
-                  <div class="card-face card-back" [attr.data-letter]="task.isFree ? 'FREE' : 'WIN'">
+                  <!-- BACK (UPDATED: FREE / PENDING / WIN) -->
+                  <div class="card-face card-back" [attr.data-letter]="
+                      task.isFree ? 'FREE' :
+                      task.status === 'pending' ? 'PENDING' :
+                      (task.status === 'verified' || task.status === 'bingoLine') ? 'WIN' : ''
+                    ">
                     <div class="back-letter">
-                      {{ task.isFree ? 'FREE' : 'WIN' }}
+                      {{
+                      task.isFree ? 'FREE' :
+                      task.status === 'pending' ? 'PENDING' :
+                      (task.status === 'verified' || task.status === 'bingoLine') ? 'WIN' : ''
+                      }}
                     </div>
                   </div>
                 </div>
@@ -141,6 +146,7 @@
           </div>
         </div>
 
+        <!-- Legend (optional: you can keep your old labels) -->
         <div class="legend game-legend">
           <div class="legend-item">
             <span class="legend-box bingoLine"></span>
@@ -148,7 +154,7 @@
           </div>
           <div class="legend-item">
             <span class="legend-box completed"></span>
-            <span>Completed</span>
+            <span>Verified</span>
           </div>
           <div class="legend-item">
             <span class="legend-box available"></span>
@@ -158,13 +164,79 @@
       </section>
     </div>
 
+    <!-- ✅ TASK SUBMIT DIALOG (NEW) -->
+    <div class="task-dialog-overlay" *ngIf="showTaskDialog">
+      <div class="task-dialog">
+
+        <div class="task-dialog__head">
+          <div>
+            <h3 class="task-dialog__title">{{ activeTask?.name }}</h3>
+            <p class="task-dialog__meta">
+              Points: <strong>+{{ activeTask?.points }}</strong>
+            </p>
+          </div>
+          <button class="task-dialog__close" (click)="closeTaskDialog()">✕</button>
+        </div>
+
+        <div class="task-dialog__body">
+
+          <!-- Completion Date -->
+          <label class="field">
+            <span>Completion Date</span>
+            <input type="date" [(ngModel)]="completionDateISO" />
+          </label>
+
+          <!-- File Upload -->
+          <label class="field">
+            <span>Submit Proof (images/files, multiple allowed)</span>
+            <input type="file" multiple (change)="onProofFilesSelected($event)" />
+          </label>
+
+          <!-- Error -->
+          <div class="error-text" *ngIf="filePreviews.length === 0">
+            ⚠ At least one proof file is required.
+          </div>
+
+          <!-- Preview -->
+          <div class="proof-grid" *ngIf="filePreviews.length">
+            <a class="proof-card" *ngFor="let p of filePreviews" [href]="p.url" target="_blank">
+              <ng-container *ngIf="p.type === 'image'; else fileTpl">
+                <img [src]="p.url" [alt]="p.name" />
+              </ng-container>
+              <ng-template #fileTpl>
+                <div class="proof-file">
+                  <div class="icon">📄</div>
+                  <div class="name">{{ p.name }}</div>
+                </div>
+              </ng-template>
+            </a>
+          </div>
+
+        </div>
+
+        <!-- ✅ ACTIONS INSIDE DIALOG -->
+        <div class="task-dialog__actions">
+          <button class="btn btn--ghost" (click)="closeTaskDialog()">Cancel</button>
+          <button class="btn btn--primary" [disabled]="filePreviews.length === 0" (click)="submitTaskProof()">
+            Submit
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ✅ WIN TOAST (NEW) -->
+    <div class="win-toast" *ngIf="showWinToast">
+      🎉 {{ winToastText }}
+    </div>
+
     <!-- ✅ OVERLAY (NO BACKGROUND) -->
     <div class="celebration-overlay" *ngIf="showOverlay" aria-hidden="true">
       <canvas #confettiCanvas class="confetti" *ngIf="overlayType === 'bingo'"></canvas>
 
       <div class="celebration-word play" [class.blackout]="overlayType === 'blackout'" [style.left.px]="overlayPos.x"
         [style.top.px]="overlayPos.y">
-
         <span class="word" *ngIf="overlayType === 'bingo'">BINGO</span>
         <span class="word" *ngIf="overlayType === 'blackout'">BLACKOUT</span>
       </div>
