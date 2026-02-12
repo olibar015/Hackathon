@@ -65,7 +65,7 @@
         </div>
       </div>
 
-      <!-- ✅ CHOICE SCREEN FIRST -->
+      <!-- CHOOSE CARD -->
       <div class="choose-screen" *ngIf="!hasChosenSize">
         <div class="choose-card">
           <h1 class="choose-title">Choose your Bingo Card</h1>
@@ -86,16 +86,21 @@
         </div>
       </div>
 
-      <!-- ✅ GAME CARD -->
+
+      <!-- BINGO CARD -->
+
       <section class="bingo-card arcade-panel" #bingoCard *ngIf="hasChosenSize">
         <div class="card-header">
           <h2>BINGO Challenge</h2>
-          <div class="completion-badge">{{ completedCount }} / {{ totalTasks }} Done</div>
+          <div class="completion-badge">
+            {{ completedCount }} / {{ totalTasks }} Done
+          </div>
         </div>
 
-        <!-- ✅ balls for 3×3 -->
-        <div class="card-bingo-balls" *ngIf="hasChosenSize && gridSize === 3">
-          <div class="ball" *ngFor="let l of ['B','I','N']" [ngClass]="l.toLowerCase()">
+
+        <div class="card-bingo-balls" *ngIf="gridSize === 3">
+          <div class="ball" *ngFor="let l of bingoBalls" [ngClass]="l.toLowerCase()">
+
             {{ l }}
           </div>
         </div>
@@ -107,19 +112,25 @@
             </div>
 
             <div class="bingo-grid-column">
-              <div class="bingo-cell" *ngFor="let task of tasks.slice(col * gridSize, col * gridSize + gridSize)"
-                [class.locked]="task.status !== 'available' || task.isFree" [class.free]="task.isFree"
-                (click)="onCellClick(task)">
-
-                <div class="card-3d" [class.is-flipped]="task.status !== 'available'">
+              <div
+                class="bingo-cell"
+                *ngFor="let task of tasks.slice(col * gridSize, col * gridSize + gridSize)"
+                [class.locked]="task?.verificationStatus !== 'AVAILABLE' || task?.isFree"
+                [class.free]="task?.isFree"
+                (click)="onCellClick(task)"
+              >
+                <div
+                  class="card-3d"
+                  [class.is-flipped]="task?.verificationStatus !== 'AVAILABLE' || task?.isFree"
+                >
                   <!-- FRONT -->
                   <div class="card-face card-front">
                     <div class="cell-gloss"></div>
 
                     <div class="cell-content">
-                      <ng-container *ngIf="!task.isFree; else freeFront">
-                        <div class="task-name">{{ task.name }}</div>
-                        <div class="task-points">+{{ task.points }} pts</div>
+                      <ng-container *ngIf="!task?.isFree; else freeFront">
+                        <div class="task-name">{{ task?.name }}</div>
+                        <div class="task-points">+{{ task?.points }} pts</div>
                       </ng-container>
 
                       <ng-template #freeFront>
@@ -129,13 +140,14 @@
                   </div>
 
                   <!-- BACK -->
-                  <div class="card-face card-back" [attr.data-letter]="task.isFree ? 'FREE' : 'WIN'">
+
+                  <div class="card-face card-back">
+
                     <div class="back-letter">
-                      {{ task.isFree ? 'FREE' : 'WIN' }}
+                      {{ task?.isFree ? 'FREE' : task?.verificationStatus }}
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
@@ -143,12 +155,8 @@
 
         <div class="legend game-legend">
           <div class="legend-item">
-            <span class="legend-box bingoLine"></span>
-            <span>BINGO Line (Bonus)</span>
-          </div>
-          <div class="legend-item">
             <span class="legend-box completed"></span>
-            <span>Completed</span>
+            <span>Verified</span>
           </div>
           <div class="legend-item">
             <span class="legend-box available"></span>
@@ -158,18 +166,63 @@
       </section>
     </div>
 
-    <!-- ✅ OVERLAY (NO BACKGROUND) -->
-    <div class="celebration-overlay" *ngIf="showOverlay" aria-hidden="true">
-      <canvas #confettiCanvas class="confetti" *ngIf="overlayType === 'bingo'"></canvas>
+    <!-- CELEBRATION OVERLAY -->
+    <div class="celebration-overlay" *ngIf="showOverlay">
+      <canvas #confettiCanvas class="confetti"></canvas>
+      <div
+        class="celebration-word play"
+        [style.left.px]="overlayPos.x"
+        [style.top.px]="overlayPos.y"
+      >
+        <span class="word">{{ overlayType === 'bingo' ? 'BINGO' : 'BLACKOUT' }}</span>
 
-      <div class="celebration-word play" [class.blackout]="overlayType === 'blackout'" [style.left.px]="overlayPos.x"
-        [style.top.px]="overlayPos.y">
-
-        <span class="word" *ngIf="overlayType === 'bingo'">BINGO</span>
-        <span class="word" *ngIf="overlayType === 'blackout'">BLACKOUT</span>
       </div>
     </div>
 
     <div class="hand-cursor"></div>
+  </div>
+</div>
+
+<!-- TASK SUBMISSION MODAL -->
+<div class="modal-backdrop" *ngIf="selectedTask">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Submit Task Proof</h3>
+      <button class="icon-btn" type="button" (click)="closeTaskModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <p><strong>Task:</strong> {{ selectedTask?.name }}</p>
+      <p><strong>Points:</strong> {{ selectedTask?.points }}</p>
+
+      <div class="proof-box">
+        <label>Upload screenshot/photo (required)</label>
+        <input type="file" accept="image/*" (change)="onProofFileSelected($event)" />
+
+        <div class="proof-preview" *ngIf="selectedProofPreview">
+          <img [src]="selectedProofPreview" alt="Proof preview" />
+        </div>
+      </div>
+
+      <div class="proof-note">
+        <label>Note (optional)</label>
+        <input [(ngModel)]="selectedProofNote" type="text" placeholder="Short explanation..." />
+      </div>
+
+      <p class="muted" *ngIf="selectedTask?.verificationStatus === 'PENDING'">
+        Pending admin verification.
+      </p>
+
+      <p class="muted" *ngIf="selectedTask?.verificationStatus === 'REJECTED'">
+        Rejected — please resubmit with clearer proof.
+      </p>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn ghost" type="button" (click)="closeTaskModal()">Cancel</button>
+      <button class="btn" type="button" (click)="submitProof()" [disabled]="!selectedProofPreview">
+        Submit for Verification
+      </button>
+    </div>
   </div>
 </div>

@@ -1,32 +1,141 @@
 <div class="dashboard-layout">
-    <!-- SIDEBAR -->
-    <app-sidebar role="admin" displayName="User"></app-sidebar>
+  <!-- SIDEBAR -->
+  <app-sidebar role="admin" displayName="Admin"></app-sidebar>
 
-    <!-- MAIN DASHBOARD CONTENT -->
-    <div class="dashboard-content">
-        <h1 class="page-title">Dashboard</h1>
-        <p class="page-subtitle">Overview of tasks by department</p>
+  <!-- MAIN DASHBOARD CONTENT -->
+  <div class="dashboard-content">
+    <h1 class="page-title">Dashboard</h1>
+    <p class="page-subtitle">Overview of tasks by department</p>
 
-        <!-- Total Tasks -->
-        <section class="section">
-            <div class="total-card">
-                <div>
-                    <p>Total Tasks Across All Departments</p>
-                    <h1>45</h1>
-                </div>
+    <!-- Total Tasks -->
+    <section class="section">
+      <div class="total-card">
+        <div>
+          <p>Total Tasks Across All Departments</p>
+          <h1>45</h1>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tasks by Department -->
+    <section class="section">
+      <h2>Tasks by Department</h2>
+
+      <div class="dept-grid">
+        <div class="dept-card it">IT <strong>15</strong></div>
+        <div class="dept-card hr">HR <strong>12</strong></div>
+        <div class="dept-card fin">Finance <strong>10</strong></div>
+        <div class="dept-card ops">Operations <strong>8</strong></div>
+      </div>
+    </section>
+
+    <!-- ✅ BINGO VERIFICATION -->
+    <section class="section" *ngIf="isAdmin">
+      <div class="verify-header">
+        <h2>
+          Bingo Card Verification
+          <span class="pill" *ngIf="pendingCards.length">
+            {{ pendingCards.length }} pending
+          </span>
+        </h2>
+
+        <button class="btn ghost" type="button" (click)="loadPending()">Refresh</button>
+      </div>
+
+      <div class="pending-list" *ngIf="pendingCards.length > 0; else none">
+        <button
+          class="pending-item"
+          *ngFor="let card of pendingCards"
+          type="button"
+          (click)="openCard(card)"
+        >
+          <div class="left">
+            <div class="name">{{ card.employeeName }}</div>
+            <div class="meta">
+              Submitted:
+              <span>{{ card.submittedAt | date:'medium' }}</span>
+              • Card: <strong>{{ card.gridSize }}×{{ card.gridSize }}</strong>
+              • Done: <strong>{{ card.completedCount }}/{{ card.totalTasks }}</strong>
             </div>
-        </section>
+          </div>
 
-        <!-- Tasks by Department -->
-        <section class="section">
-            <h2>Tasks by Department</h2>
+          <div class="right">
+            <span class="status pending">{{ card.status }}</span>
+          </div>
+        </button>
+      </div>
 
-            <div class="dept-grid">
-                <div class="dept-card it">IT <strong>15</strong></div>
-                <div class="dept-card hr">HR <strong>12</strong></div>
-                <div class="dept-card fin">Finance <strong>10</strong></div>
-                <div class="dept-card ops">Operations <strong>8</strong></div>
-            </div>
-        </section>
+      <ng-template #none>
+        <p>No pending submissions.</p>
+      </ng-template>
+    </section>
+  </div>
+</div>
+
+<!-- ✅ MODAL -->
+<div class="modal-backdrop" *ngIf="selectedCard">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Verify Bingo Card</h3>
+      <button class="icon-btn" type="button" (click)="closeCard()">✕</button>
     </div>
+
+    <div class="modal-body">
+      <p><strong>Employee:</strong> {{ selectedCard.employeeName }}</p>
+      <p><strong>Grid:</strong> {{ selectedCard.gridSize }}×{{ selectedCard.gridSize }}</p>
+      <p><strong>Completed:</strong> {{ selectedCard.completedCount }} / {{ selectedCard.totalTasks }}</p>
+      <p><strong>Submitted:</strong> {{ selectedCard.submittedAt | date:'medium' }}</p>
+
+      <h4>Tasks</h4>
+      <div class="cells">
+        <div class="cell" *ngFor="let t of (selectedCard.tasks || [])">
+
+          <div class="cell-title">
+            <span>{{ t.name }}</span>
+
+            <!-- ✅ FIX: no t.status -->
+            <span class="badge" [class.done]="t.isFree || t.verificationStatus !== 'AVAILABLE'">
+              {{ badgeText(t) }}
+            </span>
+          </div>
+
+          <div class="cell-meta">
+            <small>Points: {{ t.points }}</small>
+            <small *ngIf="t.isFree">FREE</small>
+          </div>
+
+          <!-- ✅ FIX: proof optional -->
+          <div class="proof" *ngIf="t.proof?.imageBase64">
+            <img [src]="t.proof?.imageBase64" alt="Proof" />
+            <small *ngIf="t.proof?.note">Note: {{ t.proof?.note }}</small>
+            <small>Submitted: {{ t.proof?.submittedAt | date:'medium' }}</small>
+          </div>
+
+          <!-- ✅ FIX: logs optional (and logs are per task, not per card) -->
+          <div class="logs" *ngIf="(t.logs || []).length">
+            <small><strong>Logs:</strong></small>
+            <div *ngFor="let lg of (t.logs || [])">
+              <small>{{ lg.action }} by {{ lg.adminName }} • {{ lg.verifiedAt | date:'medium' }}</small>
+              <small *ngIf="lg.reason">Reason: {{ lg.reason }}</small>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="reject">
+        <label>Reject reason</label>
+        <input #rejectReasonInput type="text" placeholder="Reason..." />
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn ghost" type="button" (click)="reject(rejectReasonInput.value)">
+        Reject
+      </button>
+      <button class="btn" type="button" (click)="approve()">
+        Approve
+      </button>
+    </div>
+  </div>
 </div>
