@@ -28,5 +28,63 @@
                 <div class="dept-card ops">Operations <strong>8</strong></div>
             </div>
         </section>
+
+        <!-- Pending → Verified (Admin Verification Queue) -->
+        <section class="verify-panel">
+            <div class="verify-panel__header">
+                <div>
+                    <h2 class="verify-title">Pending Task Verification</h2>
+                    <p class="verify-subtitle">Review submitted proofs and verify tasks.</p>
+                </div>
+
+                <div class="verify-badge">
+                    <span class="verify-badge__text">{{ pendingCount }} pending</span>
+                </div>
+            </div>
+
+            <div class="verify-list" *ngIf="pendingTaskVerifications.length; else noPending">
+                <div class="verify-item" *ngFor="let task of pendingTaskVerifications; trackBy: trackByIdx">
+                    <div class="verify-item__left">
+                        <div class="verify-name">{{ task.employeeName }}</div>
+
+                        <div class="verify-meta">
+                            <span class="chip">{{ task.department }}</span>
+                            <span class="dot">•</span>
+                            <span class="task-title">{{ task.taskTitle }}</span>
+                        </div>
+
+                        <div class="verify-date">Submitted: {{ task.submittedAt }}</div>
+                    </div>
+
+                    <div class="verify-item__proofs">
+                        <ng-container *ngFor="let proof of task.proofs; trackBy: trackByIdx">
+                            <a class="proof" [href]="proof.url" target="_blank" rel="noopener">
+                                <ng-container *ngIf="proof.type === 'image'; else fileProof">
+                                    <img class="proof__thumb" [src]="proof.url" [alt]="proof.label || 'Proof'" />
+                                </ng-container>
+
+                                <ng-template #fileProof>
+                                    <div class="proof__file">
+                                        <div class="proof__fileIcon">📄</div>
+                                        <div class="proof__fileText">{{ proof.label || 'File' }}</div>
+                                    </div>
+                                </ng-template>
+                            </a>
+                        </ng-container>
+                    </div>
+
+                    <div class="verify-item__actions">
+                        <button class="btn btn--ghost" (click)="rejectTask(task)">Reject</button>
+                        <button class="btn btn--primary" (click)="approveTask(task)">Verify</button>
+                    </div>
+                </div>
+            </div>
+
+            <ng-template #noPending>
+                <div class="verify-empty">No pending submissions right now ✅</div>
+            </ng-template>
+        </section>
+
+
     </div>
 </div>
