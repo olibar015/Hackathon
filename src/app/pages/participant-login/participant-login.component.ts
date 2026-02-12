@@ -44,7 +44,7 @@ export class ParticipantLoginComponent {
         const payload = { email: this.email, password: this.password };
         console.log('Submitting login payload:', payload);
         // ✅ go to your board
-        this.router.navigateByUrl('/participant-board');
+        this.router.navigateByUrl('/participant/participant-board');
       },
       error: (err: any) => {
         console.error('Login error:', err);

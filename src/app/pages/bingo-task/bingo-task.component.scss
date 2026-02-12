@@ -830,3 +830,119 @@ app-sidebar {
   gap: 14px;
   margin: 10px 0 14px;
 }
+
+/* ✅ Card Picker Overlay */
+.card-picker-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, .6);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.card-picker {
+  width: min(980px, 100%);
+  max-height: 85vh;
+  overflow: auto;
+  border-radius: 18px;
+  padding: 18px;
+  background: rgba(10, 18, 40, 0.92);
+  border: 1px solid rgba(255, 255, 255, .14);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .45);
+  margin-left: 20%;
+}
+
+.picker-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+
+  h2 {
+    margin: 0;
+    color: #eef6ff;
+    font-size: 18px;
+    font-weight: 800;
+  }
+
+  p {
+    margin: 6px 0 0;
+    opacity: .85;
+    color: #eef6ff;
+    font-size: 13px;
+  }
+}
+
+.picker-close {
+  border: 0;
+  background: rgba(255, 255, 255, .12);
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.picker-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 620px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.picker-card {
+  text-align: left;
+  padding: 14px;
+  border-radius: 16px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .14);
+  color: #eef6ff;
+  transition: transform .15s ease, background .15s ease;
+  height: 300px;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, .12);
+  }
+}
+
+.picker-title {
+  font-weight: 800;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.picker-sub {
+  font-size: 12px;
+  opacity: .8;
+  margin-bottom: 10px;
+}
+
+.mini-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.mini-cell {
+  text-align: center;
+  font-size: 9px;
+  line-height: 1.15;
+  padding: 8px 6px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, .22);
+  border: 1px solid rgba(255, 255, 255, .10);
+  height: 70px;
+  overflow: hidden;
+}
