@@ -141,7 +141,7 @@ export class RedemptionStoreComponent implements OnInit {
 
   redeemReward(reward: Reward): void {
     if (this.currentPoints >= reward.points) {
-      this.currentPoints += reward.points;
+      this.currentPoints -= reward.points;
       alert(`Successfully redeemed ${reward.name}!`);
     } else {
       alert('Insufficient points');

@@ -36,28 +36,61 @@
         </div>
       </div>
 
-      <!-- ✅ 3×3 CARD PICKER OVERLAY -->
+      <!-- ✅ CARD PICKER OVERLAY (PAGINATION) -->
       <div class="card-picker-overlay" *ngIf="showCardPicker && isEmployee">
-        <div class="card-picker">
+        <div class="card-picker-pagination">
           <div class="picker-head">
             <div>
-              <h2>Select a 3×3 Daily Fun Card</h2>
-              <p>Pick one to play. You can switch anytime.</p>
+              <h2>Select a {{ cardPickerSize }}×{{ cardPickerSize }} Card</h2>
+              <p>{{ currentCardIndex + 1 }} of {{ cardCount }}</p>
             </div>
             <button class="picker-close" (click)="showCardPicker=false">✕</button>
           </div>
 
-          <div class="picker-grid">
-            <button class="picker-card" *ngFor="let card of dailyCards3x3" (click)="choose3x3Card(card.id)">
-              <div class="picker-title">{{ card.title }}</div>
-              <div class="picker-sub" *ngIf="card.subtitle">{{ card.subtitle }}</div>
+          <!-- Single Card Display -->
+          <div class="picker-card-container" *ngIf="currentCard">
+            <div class="picker-card-single">
+              <div class="picker-title">{{ currentCard.title }}</div>
+              <div class="picker-sub" *ngIf="currentCard.subtitle">{{ currentCard.subtitle }}</div>
 
-              <!-- mini preview 3×3 -->
-              <div class="mini-grid">
-                <div class="mini-cell" *ngFor="let t of card.tasks">
-                  {{ t.name }}
+              <!-- Full preview (5×5 or 3×3) -->
+              <div class="preview-grid" 
+                   [class.preview-grid-3x3]="cardPickerSize === 3"
+                   [class.preview-grid-5x5]="cardPickerSize === 5">
+                <div class="preview-cell" *ngFor="let t of currentCard.tasks">
+                  <div class="cell-label">{{ t.name === 'FREE' ? '★' : t.name }}</div>
+                  <div class="cell-points" *ngIf="t.name !== 'FREE'">+{{ t.points }}</div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- Pagination Controls & Select Button -->
+          <div class="picker-footer">
+            <!-- Pagination Controls -->
+            <div class="picker-pagination-controls">
+              <button class="pagination-btn prev-btn" 
+                      [disabled]="isFirstCard"
+                      (click)="prevCard()">
+                ← Previous
+              </button>
+
+              <div class="pagination-info">
+                <span class="dot" *ngFor="let i of [0,1,2,3,4,5]" 
+                      [class.active]="i === currentCardIndex"
+                      [style.display]="i >= cardCount ? 'none' : 'inline-block'"></span>
+              </div>
+
+              <button class="pagination-btn next-btn"
+                      [disabled]="isLastCard"
+                      (click)="nextCard()">
+                Next →
+              </button>
+            </div>
+
+            <!-- Select Button -->
+            <button class="picker-select-btn" (click)="chooseCard()">
+              Select This Card
             </button>
           </div>
         </div>
@@ -71,13 +104,13 @@
 
           <div class="choose-actions">
             <button class="choose-btn" (click)="start3x3()">
-              3×3 Daily Fun Card
-              <span class="hint">Pick from multiple 3×3 sets • Win: row/col/diagonal</span>
+              3×3 Daily Fun Cards
+              <span class="hint">Pick from multiple fun card sets</span>
             </button>
 
-            <button class="choose-btn gold" (click)="setBoardSize(5)">
-              5×5 Task Card
-              <span class="hint">Has FREE center • Win: row/col/diagonal</span>
+            <button class="choose-btn gold" (click)="start5x5()">
+              5×5 Task Cards
+              <span class="hint">Choose from 3 different task themes</span>
             </button>
           </div>
         </div>

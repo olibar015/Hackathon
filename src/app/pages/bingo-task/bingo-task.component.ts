@@ -62,9 +62,8 @@ export class BingoTaskComponent implements OnInit {
   // DATA SOURCES
   // ======================
 
-  // NOTE: These sources used to have status 'completed'.
-  // We keep them but normalize to 'verified' when building the board.
-  private readonly tasks5x5Source: Array<Omit<BingoTask, 'status'> & { status: 'completed' | 'available' }> = [
+  // 5×5 Card templates with 3 different task sets
+  private readonly tasks5x5Set1: Array<Omit<BingoTask, 'status'> & { status: 'completed' | 'available' }> = [
     { id: 1, name: 'Complete Training (Any IT Skill)', points: 50, status: 'completed' },
     { id: 2, name: 'Acquire Training Certificate', points: 100, status: 'available' },
     { id: 3, name: 'No Absences for the Whole Month', points: 200, status: 'available' },
@@ -93,6 +92,70 @@ export class BingoTaskComponent implements OnInit {
     { id: 22, name: 'Resolved Issues / Concerns from Client', points: 100, status: 'available' },
     { id: 23, name: 'Passed on ISO Internal Audit', points: 50, status: 'available' },
     { id: 24, name: 'Solve Risk / Tech Scenario', points: 30, status: 'available' },
+    { id: 25, name: 'FREE', points: 0, status: 'available' },
+  ];
+
+  private readonly tasks5x5Set2: Array<Omit<BingoTask, 'status'> & { status: 'available' }> = [
+    { id: 1, name: 'Conduct Code Review', points: 40, status: 'available' },
+    { id: 2, name: 'Complete Bug Fix', points: 50, status: 'available' },
+    { id: 3, name: 'Deploy to Production', points: 75, status: 'available' },
+    { id: 4, name: 'Refactor Legacy Code', points: 60, status: 'available' },
+    { id: 5, name: 'Write Unit Tests', points: 35, status: 'available' },
+
+    { id: 6, name: 'Optimize Database Query', points: 50, status: 'available' },
+    { id: 7, name: 'Document API Endpoint', points: 30, status: 'available' },
+    { id: 8, name: 'Fix Security Vulnerability', points: 80, status: 'available' },
+    { id: 9, name: 'Implement Feature Request', points: 60, status: 'available' },
+    { id: 10, name: 'Tech Debt Improvement', points: 45, status: 'available' },
+
+    { id: 11, name: 'Investigate Performance Issue', points: 50, status: 'available' },
+    { id: 12, name: 'Update Dependencies', points: 40, status: 'available' },
+    { id: 13, name: 'Configure CI/CD Pipeline', points: 65, status: 'available' },
+    { id: 14, name: 'Write Developer Documentation', points: 35, status: 'available' },
+    { id: 15, name: 'Mentor Junior Developer', points: 40, status: 'available' },
+
+    { id: 16, name: 'Improve Code Coverage', points: 45, status: 'available' },
+    { id: 17, name: 'Set Up Development Environment', points: 30, status: 'available' },
+    { id: 18, name: 'Troubleshoot Integration Issue', points: 55, status: 'available' },
+    { id: 19, name: 'Perform Load Testing', points: 50, status: 'available' },
+    { id: 20, name: 'Review Architecture Design', points: 60, status: 'available' },
+
+    { id: 21, name: 'Submit Code for Review', points: 25, status: 'available' },
+    { id: 22, name: 'Fix Critical Bug', points: 100, status: 'available' },
+    { id: 23, name: 'Implement Data Migration', points: 70, status: 'available' },
+    { id: 24, name: 'Design System Component', points: 55, status: 'available' },
+    { id: 25, name: 'FREE', points: 0, status: 'available' },
+  ];
+
+  private readonly tasks5x5Set3: Array<Omit<BingoTask, 'status'> & { status: 'available' }> = [
+    { id: 1, name: 'Attend Stakeholder Meeting', points: 20, status: 'available' },
+    { id: 2, name: 'Create Project Timeline', points: 40, status: 'available' },
+    { id: 3, name: 'Update Project Status Report', points: 30, status: 'available' },
+    { id: 4, name: 'Lead Team Standup', points: 25, status: 'available' },
+    { id: 5, name: 'Gather Requirements from Client', points: 50, status: 'available' },
+
+    { id: 6, name: 'Prepare Project Proposal', points: 55, status: 'available' },
+    { id: 7, name: 'Schedule Team Retrospective', points: 30, status: 'available' },
+    { id: 8, name: 'Document Business Requirements', points: 45, status: 'available' },
+    { id: 9, name: 'Coordinate Cross-Team Initiative', points: 50, status: 'available' },
+    { id: 10, name: 'Present Progress to Stakeholders', points: 40, status: 'available' },
+
+    { id: 11, name: 'Risk Assessment & Mitigation', points: 50, status: 'available' },
+    { id: 12, name: 'Update Project Roadmap', points: 40, status: 'available' },
+    { id: 13, name: 'Resource Planning & Allocation', points: 45, status: 'available' },
+    { id: 14, name: 'Conduct Client Review Meeting', points: 50, status: 'available' },
+    { id: 15, name: 'Budget Planning & Tracking', points: 45, status: 'available' },
+
+    { id: 16, name: 'Quality Assurance Review', points: 40, status: 'available' },
+    { id: 17, name: 'Release Planning', points: 50, status: 'available' },
+    { id: 18, name: 'Change Management Process', points: 45, status: 'available' },
+    { id: 19, name: 'Team Capacity Analysis', points: 35, status: 'available' },
+    { id: 20, name: 'Post-Implementation Review', points: 50, status: 'available' },
+
+    { id: 21, name: 'Daily Standup Participation', points: 15, status: 'available' },
+    { id: 22, name: 'Project Delivery on Time', points: 100, status: 'available' },
+    { id: 23, name: 'Stakeholder Satisfaction', points: 75, status: 'available' },
+    { id: 24, name: 'Successful Sprint Completion', points: 60, status: 'available' },
     { id: 25, name: 'FREE', points: 0, status: 'available' },
   ];
 
@@ -154,9 +217,32 @@ export class BingoTaskComponent implements OnInit {
     },
   ];
 
+  readonly cardSets5x5: BingoCardTemplate[] = [
+    {
+      id: 'set-5x5-1',
+      title: 'Learning & Development',
+      subtitle: 'Training, Certification & Knowledge Sharing',
+      tasks: this.tasks5x5Set1.map(t => this.normalizeIncomingTask(t)),
+    },
+    {
+      id: 'set-5x5-2',
+      title: 'Technical Excellence',
+      subtitle: 'Development, Testing & Engineering Tasks',
+      tasks: this.tasks5x5Set2.map(t => this.normalizeIncomingTask(t)),
+    },
+    {
+      id: 'set-5x5-3',
+      title: 'Project Management',
+      subtitle: 'Planning, Coordination & Delivery',
+      tasks: this.tasks5x5Set3.map(t => this.normalizeIncomingTask(t)),
+    },
+  ];
+
   // ✅ Picker state
   showCardPicker = false;
   selectedCardId: string | null = null;
+  cardPickerSize: 3 | 5 = 3;
+  currentCardIndex = 0; // For pagination
 
   // ✅ Saves progress per 3x3 card while switching (front-end only)
   private cardState = new Map<string, BingoTask[]>();
@@ -234,24 +320,73 @@ export class BingoTaskComponent implements OnInit {
   // ======================
 
   start3x3(): void {
+    this.cardPickerSize = 3;
     this.gridSize = 3;
+    this.currentCardIndex = 0; // Reset pagination
     this.showCardPicker = true;
   }
 
-  choose3x3Card(cardId: string): void {
-    this.selectedCardId = cardId;
+  start5x5(): void {
+    this.cardPickerSize = 5;
+    this.gridSize = 5;
+    this.currentCardIndex = 0; // Reset pagination
+    this.showCardPicker = true;
+  }
+
+  nextCard(): void {
+    const cards = this.currentCards;
+    if (this.currentCardIndex < cards.length - 1) {
+      this.currentCardIndex++;
+    }
+  }
+
+  prevCard(): void {
+    if (this.currentCardIndex > 0) {
+      this.currentCardIndex--;
+    }
+  }
+
+  get currentCard(): BingoCardTemplate | undefined {
+    return this.currentCards[this.currentCardIndex];
+  }
+
+  get cardCount(): number {
+    return this.currentCards.length;
+  }
+
+  get isFirstCard(): boolean {
+    return this.currentCardIndex === 0;
+  }
+
+  get isLastCard(): boolean {
+    return this.currentCardIndex === this.currentCards.length - 1;
+  }
+
+  chooseCard(): void {
+    if (!this.currentCard) return;
+    this.selectedCardId = this.currentCard.id;
     this.showCardPicker = false;
+    this.currentCardIndex = 0; // Reset pagination
 
     this.hasChosenSize = true;
-    this.gridSize = 3;
+    this.gridSize = this.cardPickerSize;
 
     this.resetBoardEffects();
-    this.loadSelected3x3Card();
+    this.loadSelectedCard();
+  }
+
+  get currentCards(): BingoCardTemplate[] {
+    return this.cardPickerSize === 3 ? this.dailyCards3x3 : this.cardSets5x5;
   }
 
   setBoardSize(size: 3 | 5): void {
     if (size === 3 && this.isEmployee) {
       this.start3x3();
+      return;
+    }
+
+    if (size === 5 && this.isEmployee) {
+      this.start5x5();
       return;
     }
 
@@ -290,7 +425,7 @@ export class BingoTaskComponent implements OnInit {
   }
 
   private build5x5(): BingoTask[] {
-    return this.tasks5x5Source.map(t => ({
+    return this.tasks5x5Set1.map(t => ({
       ...this.normalizeIncomingTask(t),
       isFree: false,
     }));
@@ -303,18 +438,23 @@ export class BingoTaskComponent implements OnInit {
     }));
   }
 
-  private loadSelected3x3Card(): void {
+  private loadSelectedCard(): void {
     if (!this.selectedCardId) return;
 
     const saved = this.cardState.get(this.selectedCardId);
     if (saved) {
       this.tasks = this.cloneTasks(saved);
     } else {
-      const tpl = this.dailyCards3x3.find(c => c.id === this.selectedCardId);
+      const allCards = [...this.dailyCards3x3, ...this.cardSets5x5];
+      const tpl = allCards.find(c => c.id === this.selectedCardId);
       this.tasks = this.cloneTasks((tpl?.tasks ?? []).map(t => this.normalizeIncomingTask(t)));
 
-      // for 3x3, keep your "FREE" text but treat as normal unless you want it special
-      this.tasks.forEach(t => (t.isFree = false));
+      // Mark FREE cells for 5x5
+      if (this.cardPickerSize === 5) {
+        this.tasks.forEach((t, i) => {
+          t.isFree = t.name === 'FREE';
+        });
+      }
 
       this.cardState.set(this.selectedCardId, this.cloneTasks(this.tasks));
     }
@@ -323,8 +463,11 @@ export class BingoTaskComponent implements OnInit {
   }
 
   private saveCurrentCardState(): void {
-    if (this.gridSize !== 3 || !this.selectedCardId) return;
-    this.cardState.set(this.selectedCardId, this.cloneTasks(this.tasks));
+    if (!this.selectedCardId) return;
+    // Save if using a selected card (from picker)
+    if (this.selectedCardId.startsWith('daily-') || this.selectedCardId.startsWith('set-')) {
+      this.cardState.set(this.selectedCardId, this.cloneTasks(this.tasks));
+    }
   }
 
   private cloneTasks(list: BingoTask[]): BingoTask[] {
