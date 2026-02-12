@@ -830,3 +830,208 @@ app-sidebar {
   gap: 14px;
   margin: 10px 0 14px;
 }
+/* ✅ SUBMIT PROOF MODAL (APPEND ONLY) */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 999999;
+}
+
+.modal {
+  width: min(720px, 96vw);
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.modal-header,
+.modal-footer {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-footer {
+  border-bottom: none;
+  border-top: 1px solid #e5e7eb;
+}
+
+.modal-body {
+  padding: 16px;
+}
+
+.icon-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.btn {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  background: #0a67b6;
+  color: #fff;
+}
+
+.btn.ghost {
+  background: transparent;
+  color: #0a67b6;
+  border: 1px solid #cfe3ff;
+}
+
+.proof-box {
+  margin-top: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.proof-label {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.proof-preview {
+  margin-top: 6px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.proof-preview img {
+  width: 100%;
+  display: block;
+}
+
+.proof-note {
+  margin-top: 12px;
+  display: grid;
+  gap: 6px;
+}
+
+.proof-note input {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.muted {
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 10px;
+}
+/* ✅ SUBMIT PROOF MODAL */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 999999;
+}
+
+.modal {
+  width: min(720px, 96vw);
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.modal-header,
+.modal-footer {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-footer {
+  border-bottom: none;
+  border-top: 1px solid #e5e7eb;
+}
+
+.modal-body {
+  padding: 16px;
+}
+
+.icon-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.btn {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 800;
+  cursor: pointer;
+  background: #0a67b6;
+  color: #fff;
+}
+
+.btn.ghost {
+  background: transparent;
+  color: #0a67b6;
+  border: 1px solid #cfe3ff;
+}
+
+.proof-box {
+  margin-top: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.proof-label {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.proof-preview {
+  margin-top: 6px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.proof-preview img {
+  width: 100%;
+  display: block;
+}
+
+.proof-note {
+  margin-top: 12px;
+  display: grid;
+  gap: 6px;
+}
+
+.proof-note input {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.muted {
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 10px;
+}
+

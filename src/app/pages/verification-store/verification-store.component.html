@@ -1,0 +1,145 @@
+<div class="page">
+  <div class="header">
+    <div>
+      <h1>Verification Store</h1>
+      <p>Admin verifies employee bingo tasks with proof (screenshot/photo).</p>
+    </div>
+
+    <button class="btn ghost" type="button" (click)="refresh()">Refresh</button>
+  </div>
+
+  <div class="grid">
+    <!-- LEFT: pending cards -->
+    <div class="panel">
+      <div class="panel-title">
+        <h2>Pending Cards</h2>
+        <span class="pill" *ngIf="pendingCards.length">{{ pendingCards.length }}</span>
+      </div>
+
+      <div class="empty" *ngIf="pendingCards.length === 0">
+        No pending submissions.
+      </div>
+
+      <button
+        class="card-item"
+        *ngFor="let c of pendingCards"
+        type="button"
+        (click)="openCard(c)"
+        [class.active]="selectedCard?.cardId === c.cardId"
+      >
+        <div class="card-left">
+          <div class="name">{{ c.employeeName }}</div>
+          <div class="meta">
+            <span>Card: <strong>{{ c.gridSize }}×{{ c.gridSize }}</strong></span>
+            <span>Submitted: <strong>{{ c.submittedAt | date:'medium' }}</strong></span>
+          </div>
+          <div class="stats">
+            <span class="stat pending">Pending: {{ c.pendingTasksCount }}</span>
+            <span class="stat ok">Verified: {{ c.verifiedTasksCount }}</span>
+            <span class="stat bad">Rejected: {{ c.rejectedTasksCount }}</span>
+          </div>
+        </div>
+
+        <div class="card-right">
+          <span class="tag">OPEN</span>
+        </div>
+      </button>
+    </div>
+
+    <!-- RIGHT: selected card details -->
+    <div class="panel" *ngIf="selectedCard; else pickOne">
+      <div class="panel-title">
+        <h2>Verify Card</h2>
+        <button class="btn danger" type="button" (click)="removeCard(selectedCard!)">Remove</button>
+      </div>
+
+      <div class="card-info">
+        <div><strong>Employee:</strong> {{ selectedCard.employeeName }}</div>
+        <div><strong>Grid:</strong> {{ selectedCard.gridSize }}×{{ selectedCard.gridSize }}</div>
+        <div><strong>Submitted:</strong> {{ selectedCard.submittedAt | date:'medium' }}</div>
+        <div class="muted">
+          Only tasks with <strong>PENDING</strong> can be approved/rejected.
+        </div>
+      </div>
+
+      <div class="tasks">
+        <div class="task" *ngFor="let t of selectedCard.tasks">
+          <div class="task-head">
+            <div class="task-title">
+              <div class="tname">{{ t.name }}</div>
+              <div class="tmeta">
+                <span>Points: <strong>{{ t.points }}</strong></span>
+                <span *ngIf="t.isFree">• FREE</span>
+              </div>
+            </div>
+
+            <div class="status" [class.pending]="t.verificationStatus==='PENDING'"
+                 [class.verified]="t.verificationStatus==='VERIFIED' || t.isFree"
+                 [class.rejected]="t.verificationStatus==='REJECTED'">
+              {{ t.isFree ? 'VERIFIED' : t.verificationStatus }}
+            </div>
+          </div>
+
+          <!-- Proof -->
+          <div class="proof" *ngIf="t.proof?.imageBase64; else noProof">
+            <img [src]="t.proof!.imageBase64" alt="proof image" />
+            <div class="proof-meta">
+              <div *ngIf="t.proof?.note"><strong>Note:</strong> {{ t.proof?.note }}</div>
+              <div class="muted">Submitted: {{ t.proof?.submittedAt | date:'medium' }}</div>
+            </div>
+          </div>
+
+          <ng-template #noProof>
+            <div class="muted">No proof uploaded.</div>
+          </ng-template>
+
+          <!-- Actions (only for PENDING and not FREE) -->
+          <div class="actions" *ngIf="!t.isFree && t.verificationStatus === 'PENDING'">
+            <input
+              type="text"
+              class="reason"
+              [(ngModel)]="rejectReasonMap[t.id]"
+              placeholder="Reject reason (optional)"
+            />
+
+            <div class="btn-row">
+              <button class="btn ghost" type="button" (click)="rejectTask(t)">Reject</button>
+              <button class="btn" type="button" (click)="approveTask(t)" [disabled]="!t.proof?.imageBase64">
+                Approve
+              </button>
+            </div>
+
+            <div class="muted small">
+              Approve is disabled if there is no proof image.
+            </div>
+          </div>
+
+          <!-- Logs -->
+          <div class="logs" *ngIf="(t.logs || []).length">
+            <div class="logs-title">Logs</div>
+            <div class="log" *ngFor="let log of (t.logs || [])">
+              <div class="log-main">
+                <strong>{{ log.action }}</strong> by {{ log.adminName }}
+              </div>
+              <div class="log-meta">
+                {{ log.verifiedAt | date:'medium' }}
+                <span *ngIf="log.reason"> • Reason: {{ log.reason }}</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="footer">
+        <button class="btn ghost" type="button" (click)="closeCard()">Close</button>
+      </div>
+    </div>
+
+    <ng-template #pickOne>
+      <div class="panel empty">
+        Select a pending card to verify.
+      </div>
+    </ng-template>
+  </div>
+</div>

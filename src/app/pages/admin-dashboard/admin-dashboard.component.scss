@@ -1,103 +1,322 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
 .dashboard-layout {
-    display: flex;
-    min-height: 98vh;
-    font-family: 'Poppins', sans-serif;
+  display: flex;
+  min-height: 98vh;
+  font-family: 'Poppins', sans-serif;
 }
 
 /* MAIN CONTENT */
 .dashboard-content {
-    flex: 1;
-    padding: 28px 36px;
-    background: #ffffff;
+  flex: 1;
+  padding: 28px 36px;
+  background: #ffffff;
 }
 
 .page-title {
-    font-size: 28px;
-    font-weight: 600;
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
 }
 
 .page-subtitle {
-    font-size: 13px;
-    font-family: 'Poppins', sans-serif;
-    color: #6b7280;
-    margin-bottom: 20px;
+  font-size: 13px;
+  font-family: 'Poppins', sans-serif;
+  color: #6b7280;
+  margin-bottom: 20px;
 }
 
 /* SECTIONS */
 .section {
-    margin-top: 24px;
+  margin-top: 24px;
 }
 
 .section h2 {
-    font-size: 16px;
-    font-family: 'Poppins', sans-serif;
-    margin-bottom: 12px;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  margin-bottom: 12px;
 }
 
 /* TOTAL CARD */
 .total-card {
-    background: linear-gradient(180deg, #0a67b6, #074f90);
-    color: white;
-    padding: 22px;
-    border-radius: 12px;
+  background: linear-gradient(180deg, #0a67b6, #074f90);
+  color: white;
+  padding: 22px;
+  border-radius: 12px;
 }
 
 .total-card h1 {
-    font-size: 42px;
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
+  font-size: 42px;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
 }
 
 /* DEPARTMENTS */
 .dept-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
 }
 
 .dept-card {
-    padding: 20px;
-    border-radius: 12px;
-    font-weight: 600;
-    font-family: 'Poppins', sans-serif;
+  padding: 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
 }
 
 .dept-card strong {
-    display: block;
-    font-size: 28px;
-    font-family: 'Poppins', sans-serif;
+  display: block;
+  font-size: 28px;
+  font-family: 'Poppins', sans-serif;
 }
 
 /* COLORS */
 .it {
-    background: #eef5ff;
-    color: #0a67b6;
+  background: #eef5ff;
+  color: #0a67b6;
 }
 
 .hr {
-    background: #eefcf1;
-    color: #16a34a;
+  background: #eefcf1;
+  color: #16a34a;
 }
 
 .fin {
-    background: #f6efff;
-    color: #7c3aed;
+  background: #f6efff;
+  color: #7c3aed;
 }
 
 .ops {
-    background: #fff1e6;
-    color: #f97316;
+  background: #fff1e6;
+  color: #f97316;
 }
 
 /* RESPONSIVE */
 @media (max-width: 900px) {
+  .quick-actions,
+  .dept-grid {
+    grid-template-columns: 1fr;
+  }
+}
 
-    .quick-actions,
-    .dept-grid {
-        grid-template-columns: 1fr;
-    }
+/* ============================= */
+/* ✅ VERIFICATION UI STYLES      */
+/* ============================= */
+
+.verify-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pill {
+  background: #eef5ff;
+  color: #0a67b6;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  margin-left: 8px;
+}
+
+.pending-list {
+  display: grid;
+  gap: 10px;
+}
+
+.pending-item {
+  width: 100%;
+  text-align: left;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 14px;
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  cursor: pointer;
+}
+
+.pending-item:hover {
+  border-color: #cbd5e1;
+}
+
+.pending-item .name {
+  font-weight: 600;
+}
+
+.pending-item .meta {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.status.pending {
+  background: #fff7ed;
+  color: #c2410c;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ✅ BUTTONS */
+.btn {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  background: #0a67b6;
+  color: #fff;
+}
+
+.btn.ghost {
+  background: transparent;
+  color: #0a67b6;
+  border: 1px solid #cfe3ff;
+}
+
+.icon-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* ✅ MODAL */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 999;
+}
+
+.modal {
+  width: min(900px, 96vw);
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.modal-header,
+.modal-footer {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-footer {
+  border-bottom: none;
+  border-top: 1px solid #e5e7eb;
+}
+
+.modal-body {
+  padding: 16px;
+}
+
+.cells {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+@media (max-width: 900px) {
+  .cells {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cell {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.cell-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.badge {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.badge.done {
+  background: #ecfdf5;
+  color: #16a34a;
+}
+
+.reject {
+  margin-top: 14px;
+  display: grid;
+  gap: 6px;
+}
+
+.reject input {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+/* ✅ VERIFICATION LOGS */
+.log-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-top: 8px;
+}
+
+.log-main {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.log-meta {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.muted {
+  font-size: 13px;
+  color: #9ca3af;
+}
+.proof {
+  margin-top: 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.proof img {
+  width: 100%;
+  display: block;
+}
+
+.logs {
+  margin-top: 8px;
+  padding: 8px;
+  border-radius: 10px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
 }
