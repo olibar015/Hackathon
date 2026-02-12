@@ -18,8 +18,8 @@ export const routes: Routes = [
   { path: 'participant-login', component: ParticipantLoginComponent },
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'registration', component: RegistrationComponent },
-  { path: 'participant-board', component: ParticipantBoardComponent },
-  { path: 'admin-dashboard', component: AdminDashboardComponent },
+  { path: 'participant/participant-board', component: ParticipantBoardComponent },
+  { path: 'admin/admin-dashboard', component: AdminDashboardComponent },
   { path: 'sidebar', component: SidebarComponent },
   { path: 'task-management', component: TaskManagementComponent },
   { path: 'bingo-task', component: BingoTaskComponent },
@@ -28,7 +28,7 @@ export const routes: Routes = [
   { path: 'admin/reward-store', component: RedemptionStoreComponent },
   { path: 'participant/reward-store', component: RedemptionStoreComponent },
   { path: 'bingo-task', component: BingoTaskComponent },
-  { path: 'reward-store', component: RedemptionStoreComponent},
+  { path: 'reward-store', component: RedemptionStoreComponent },
 
   { path: '**', redirectTo: 'landing' }
 ];

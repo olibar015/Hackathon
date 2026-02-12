@@ -41,23 +41,23 @@ export class RegistrationComponent {
 
     console.log('Submitting register payload:', payload);
 
-    // this.authService.register(payload).subscribe({
-    //   next: (res: any) => {
-    //     console.log('Success', res);
-    //     Swal.fire({
-    //       icon: 'success',
-    //       title: 'Registered!',
-    //       text: 'Account created successfully.'
-    //     });
-    //   },
-    //   error: (err: any) => {
-    //     console.error('Error', err);
-    //     Swal.fire({
-    //       icon: 'error',
-    //       title: 'Registration failed',
-    //       text: err?.error?.message ?? 'Something went wrong.'
-    //     });
-    //   }
-    // });
+    this.authService.register(payload).subscribe({
+      next: (res: any) => {
+        console.log('Success', res);
+        Swal.fire({
+          icon: 'success',
+          title: 'Registered!',
+          text: 'Account created successfully.'
+        });
+      },
+      error: (err: any) => {
+        console.error('Error', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Registration failed',
+          text: err?.error?.message ?? 'Something went wrong.'
+        });
+      }
+    });
   }
 }

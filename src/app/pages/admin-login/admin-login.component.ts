@@ -42,7 +42,7 @@ export class AdminLoginComponent {
             return;
           }
 
-          this.router.navigateByUrl('/admin-dashboard');
+          this.router.navigateByUrl('/admin/admin-dashboard');
         },
         error: (err) => {
           this.errorMsg =

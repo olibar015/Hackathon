@@ -18,6 +18,7 @@
           <div class="hud-chip" *ngIf="hasChosenSize">
             <span class="hud-label">Card</span>
             <div class="hud-actions">
+              <!-- ✅ Employee: 3×3 opens picker (TS handles this inside setBoardSize) -->
               <button class="hud-btn" [class.active]="gridSize === 3" (click)="setBoardSize(3)">3×3</button>
               <button class="hud-btn" [class.active]="gridSize === 5" (click)="setBoardSize(5)">5×5</button>
             </div>
@@ -29,8 +30,37 @@
             <span class="hud-value">{{ completedCount }} / {{ totalTasks }}</span>
           </div>
 
+          <!-- Change card button -->
           <div class="hud-chip" *ngIf="hasChosenSize">
             <button class="hud-btn" (click)="backToChoice()">Change Card</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ✅ 3×3 CARD PICKER OVERLAY -->
+      <div class="card-picker-overlay" *ngIf="showCardPicker && isEmployee">
+        <div class="card-picker">
+          <div class="picker-head">
+            <div>
+              <h2>Select a 3×3 Daily Fun Card</h2>
+              <p>Pick one to play. You can switch anytime.</p>
+            </div>
+            <button class="picker-close" (click)="showCardPicker=false">✕</button>
+          </div>
+
+          <div class="picker-grid">
+            <button class="picker-card" *ngFor="let card of dailyCards3x3" (click)="choose3x3Card(card.id)">
+
+              <div class="picker-title">{{ card.title }}</div>
+              <div class="picker-sub" *ngIf="card.subtitle">{{ card.subtitle }}</div>
+
+              <!-- mini preview 3×3 -->
+              <div class="mini-grid">
+                <div class="mini-cell" *ngFor="let t of card.tasks">
+                  {{ t.name }}
+                </div>
+              </div>
+            </button>
           </div>
         </div>
       </div>
@@ -42,9 +72,10 @@
           <p class="choose-sub">Pick a card size to start playing.</p>
 
           <div class="choose-actions">
-            <button class="choose-btn" (click)="setBoardSize(3)">
+            <!-- ✅ Employee selects 3×3 -> opens picker -->
+            <button class="choose-btn" (click)="start3x3()">
               3×3 Daily Fun Card
-              <span class="hint">No FREE • Win: row/col/diagonal</span>
+              <span class="hint">Pick from multiple 3×3 sets • Win: row/col/diagonal</span>
             </button>
 
             <button class="choose-btn gold" (click)="setBoardSize(5)">
@@ -55,7 +86,9 @@
         </div>
       </div>
 
+
       <!-- BINGO CARD -->
+
       <section class="bingo-card arcade-panel" #bingoCard *ngIf="hasChosenSize">
         <div class="card-header">
           <h2>BINGO Challenge</h2>
@@ -64,8 +97,10 @@
           </div>
         </div>
 
+
         <div class="card-bingo-balls" *ngIf="gridSize === 3">
           <div class="ball" *ngFor="let l of bingoBalls" [ngClass]="l.toLowerCase()">
+
             {{ l }}
           </div>
         </div>
@@ -105,7 +140,9 @@
                   </div>
 
                   <!-- BACK -->
+
                   <div class="card-face card-back">
+
                     <div class="back-letter">
                       {{ task?.isFree ? 'FREE' : task?.verificationStatus }}
                     </div>
@@ -138,6 +175,7 @@
         [style.top.px]="overlayPos.y"
       >
         <span class="word">{{ overlayType === 'bingo' ? 'BINGO' : 'BLACKOUT' }}</span>
+
       </div>
     </div>
 

@@ -11,6 +11,13 @@ import {
 
 type OverlayType = 'bingo' | 'blackout';
 
+interface BingoCardTemplate {
+  id: string;
+  title: string;
+  subtitle?: string;
+  tasks: BingoTask[]; // should be 9 tasks for 3x3
+}
+
 @Component({
   selector: 'app-bingo-task',
   standalone: true,
@@ -26,6 +33,7 @@ export class BingoTaskComponent implements OnInit {
   // ✅ user choice
   gridSize: 3 | 5 = 5;
   hasChosenSize = false;
+
   readonly bingoBalls = ['B', 'I', 'N', 'G', 'O'];
 
   // ✅ UI tasks
@@ -41,12 +49,16 @@ export class BingoTaskComponent implements OnInit {
   overlayType: OverlayType = 'bingo';
   overlayPos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 
+
   @ViewChild('bingoCard', { static: false }) bingoCard?: ElementRef<HTMLElement>;
+  @ViewChild('confettiCanvas') confettiCanvas?: ElementRef<HTMLCanvasElement>;
 
   constructor(private store: VerificationStoreService) {}
 
   ngOnInit(): void {
+
     // optional: nothing on init
+
   }
 
   // ======================
@@ -70,6 +82,7 @@ export class BingoTaskComponent implements OnInit {
   }
 
   // ======================
+
   // data sources
   // ======================
   private readonly tasks5x5Source: VerifiableBingoTask[] = [
@@ -121,9 +134,17 @@ export class BingoTaskComponent implements OnInit {
   // ======================
   // board selection
   // ======================
+
   setBoardSize(size: 3 | 5): void {
+    // employee + 3x3 -> open picker instead of loading a single static 3x3
+    if (size === 3 && this.isEmployee) {
+      this.start3x3();
+      return;
+    }
+
     this.gridSize = size;
     this.hasChosenSize = true;
+
 
     const saved = this.store.loadEmployeeCard(this.employee.id, size);
     if (saved) {
@@ -133,18 +154,22 @@ export class BingoTaskComponent implements OnInit {
 
     this.tasks = size === 5 ? this.build5x5() : this.build3x3();
 
+
     if (size === 5) this.initializeFreeCenter();
 
     this.saveBoard();
   }
 
+
   private build5x5(): VerifiableBingoTask[] {
+
     return this.tasks5x5Source.map(t => ({
       ...t,
       isFree: false,
       logs: t.logs || [],
     }));
   }
+
 
   private build3x3(): VerifiableBingoTask[] {
     return this.tasks3x3Source.map(t => ({
@@ -179,6 +204,7 @@ export class BingoTaskComponent implements OnInit {
   onCellClick(task: VerifiableBingoTask): void {
     if (!task) return;
 
+
     // FREE should not open modal
     if (task.isFree) return;
 
@@ -188,10 +214,12 @@ export class BingoTaskComponent implements OnInit {
     this.selectedProofNote = task.proof?.note || '';
   }
 
+
   // ✅ THIS FIXES YOUR (change)="onProofFileSelected($event)" ERROR
   onProofFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) return;
+
 
     const file = input.files[0];
     if (!file.type.startsWith('image/')) return;
@@ -232,6 +260,7 @@ export class BingoTaskComponent implements OnInit {
 
     this.store.submitForVerification(payload);
 
+
     this.closeTaskModal();
   }
 
@@ -258,8 +287,10 @@ export class BingoTaskComponent implements OnInit {
     this.overlayPos = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
   }
 
+
   @HostListener('window:resize')
   onResize(): void {
     if (this.showOverlay) this.updateOverlayPosition();
   }
+
 }
