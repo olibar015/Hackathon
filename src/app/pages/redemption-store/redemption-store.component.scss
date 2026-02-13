@@ -319,6 +319,7 @@
   flex-direction: column;
   gap: 8px;
   flex-shrink: 0;
+  position: relative;
 }
 
 .reward-icon {
@@ -345,6 +346,22 @@
   width: fit-content;
   border: 1px solid rgba(255, 255, 255, 0.55);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.quantity-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  background: linear-gradient(180deg, #ff6b6b, #e74c3c);
+  color: #ffffff;
+  padding: 4px 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  width: 35px;
+  text-align: center;
 }
 
 .reward-body {
@@ -490,6 +507,22 @@
   color: rgba(255, 255, 255, 0.75);
   font-size: 13px;
   margin: 0;
+}
+
+.no-rewards-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  padding: 40px 20px;
+
+  p {
+    font-size: 24px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    margin: 0;
+  }
 }
 
 .earn-list {

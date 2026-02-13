@@ -4,6 +4,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { EditRewardComponent } from '../mat-dialogs/edit-reward/edit-reward.component';
 import { CreateRewardComponent } from '../mat-dialogs/create-reward/create-reward.component';
+import Swal from 'sweetalert2';
 
 
 export interface Reward {
@@ -15,6 +16,7 @@ export interface Reward {
   originalPrice?: string;
   image?: string;
   badge?: string;
+  quantity: number;
 }
 
 @Component({
@@ -25,7 +27,7 @@ export interface Reward {
   styleUrl: './redemption-store.component.scss'
 })
 export class RedemptionStoreComponent implements OnInit {
-  currentPoints = 20525;
+  currentPoints = 100000;
   expiryDate = '06/22';
   activeTab: 'redeem' | 'earn' | 'history' = 'redeem';
   selectedCategory = 'all';
@@ -59,7 +61,8 @@ export class RedemptionStoreComponent implements OnInit {
       category: 'entertainment',
       points: 1800,
       originalPrice: '₹5000',
-      badge: 'Popular'
+      badge: 'Popular',
+      quantity: 5
     },
     {
       id: 2,
@@ -67,21 +70,24 @@ export class RedemptionStoreComponent implements OnInit {
       category: 'entertainment',
       points: 800,
       originalPrice: 'Prime',
-      badge: 'Deal'
+      badge: 'Deal',
+      quantity: 10
     },
     {
       id: 3,
       name: 'Buy Coupon Code worth $25',
       category: 'coupons',
       points: 200,
-      originalPrice: '$25'
+      originalPrice: '$25',
+      quantity: 15
     },
     {
       id: 4,
       name: 'Get 50 INR back to wallet',
       category: 'food',
       points: 300,
-      originalPrice: '₹50'
+      originalPrice: '₹50',
+      quantity: 20
     },
     {
       id: 5,
@@ -89,7 +95,8 @@ export class RedemptionStoreComponent implements OnInit {
       category: 'electronics',
       points: 10000,
       originalPrice: 'Adidas',
-      badge: 'Hot'
+      badge: 'Hot',
+      quantity: 3
     },
     {
       id: 6,
@@ -97,14 +104,16 @@ export class RedemptionStoreComponent implements OnInit {
       category: 'entertainment',
       points: 1200,
       originalPrice: 'Premium',
-      badge: 'New'
+      badge: 'New',
+      quantity: 8
     },
     {
       id: 7,
       name: 'Restaurant Voucher $50',
       category: 'food',
       points: 1500,
-      originalPrice: '$50'
+      originalPrice: '$50',
+      quantity: 12
     },
     {
       id: 8,
@@ -112,7 +121,8 @@ export class RedemptionStoreComponent implements OnInit {
       category: 'electronics',
       points: 25000,
       originalPrice: '$399',
-      badge: 'Exclusive'
+      badge: 'Exclusive',
+      quantity: 2
     }
   ];
 
@@ -142,9 +152,28 @@ export class RedemptionStoreComponent implements OnInit {
   redeemReward(reward: Reward): void {
     if (this.currentPoints >= reward.points) {
       this.currentPoints -= reward.points;
-      alert(`Successfully redeemed ${reward.name}!`);
+      reward.quantity -= 1;
+      
+      // Remove reward if quantity reaches 0
+      if (reward.quantity === 0) {
+        this.rewards = this.rewards.filter(r => r.id !== reward.id);
+      }
+      
+      Swal.fire({
+        title: 'Success!',
+        text: `Successfully redeemed ${reward.name}!`,
+        icon: 'success',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#3c66ff', 
+      });
     } else {
-      alert('Insufficient points');
+      Swal.fire({
+        title: 'Insufficient Points',
+        text: `You need ${reward.points - this.currentPoints} more points to redeem this reward.`,
+        icon: 'warning',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#3c66ff', 
+      });
     }
   }
 
@@ -162,7 +191,8 @@ export class RedemptionStoreComponent implements OnInit {
         name: result.name,
         description: result.description,
         category: 'entertainment',
-        points: result.points
+        points: result.points,
+        quantity: 1
       };
       this.rewards.push(newReward);
     });

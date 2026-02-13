@@ -38,11 +38,15 @@
           Create Reward
         </button>
       </div>
-      <div class="rewards-grid">
+      <div *ngIf="rewards.length === 0" class="no-rewards-message">
+        <p>No rewards available</p>
+      </div>
+      <div class="rewards-grid" *ngIf="rewards.length > 0">
         <div class="reward-card" *ngFor="let reward of rewards">
           <div class="reward-header">
             <div class="reward-icon">🎁</div>
             <span *ngIf="reward.badge" class="reward-badge">{{ reward.badge }}</span>
+            <span class="quantity-badge">{{ reward.quantity }}</span>
           </div>
           <div class="reward-body">
             <h3>{{ reward.name }}</h3>
@@ -53,7 +57,6 @@
           </div>
           <div class="reward-actions">
             <button *ngIf="role === 'employee'" class="redeem-btn" 
-                    [disabled]="currentPoints < reward.points"
                     (click)="redeemReward(reward)">
               <svg viewBox="0 0 24 24" role="img" focusable="false">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
