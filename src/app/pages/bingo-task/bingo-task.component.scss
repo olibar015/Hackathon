@@ -862,6 +862,25 @@ app-sidebar {
   gap: 16px;
 }
 
+.card-picker-pagination::-webkit-scrollbar {
+  width: 8px;
+}
+
+.card-picker-pagination::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.card-picker-pagination::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.card-picker-pagination::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
 .picker-head {
   display: flex;
   align-items: flex-start;
